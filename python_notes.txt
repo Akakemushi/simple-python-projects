@@ -7,7 +7,11 @@
 - BUT!  There is a BETTER version of REPL, which is running    "ipython3"  which gives you stuff like remembering previous commands, using tab, etc.
   Exiting ipython3 is the same as the previous.
 - Python is NOT as smart as Ruby, and does not assume that a string + an integer = a string (implicitly converting the integer into a string for you.)
-
+- the "+" operator works on strings for concatenation.
+- the "*" operator works on strings for MULTIPLIED concatenation! Nifty.  "Bob" * 5  --> BobBobBobBobBob
+- you can put as many * as you want in str * int expressions, and it doesnt matter if they're before or after the str (or both) however you can't
+  mix different operators.  For example   10 // 2 * 1 * "Bob" will not work, as the // operator is present.
+- python convention is to use underscores for variable names (but this textbook uses camelcase)
 
 
 SYNTAX NOTES
@@ -24,4 +28,11 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
               SO  as an example,  7 - 3 ** 2  evaluates to -2, not 16, because the exponent is evaluated FIRST.
               You can also STACK exponents, so 2 ** 2 ** 4  evaluates to 65536 (huge), not 256.  The last exponent is evaluated and THEN the result is
               treated as the exponent to the next exponent.
-- Python is NOT as smart as Ruby, and does not assume that a string + an integer = a string (implicitly converting the integer into a string for you.)
+- variables =  works like Ruby.  Just put the variable name = value.  You don't need to specify data type.  n = 3, name = "Bob"
+               naming restrictions.  1. alphanumeric and underscore only.  2. must not start with number 3. no spaces.
+               variable names are CaSe SeNsItIvE
+- user input = input()     you can add a message or question inside the parenthesis  input("What's your name?")
+- string length =   len(var)   or   len("String literal")
+- array length  =   len(array)   or    len([2, 3, 4, 5])
+- string to int  =   int(string variable)
+- int to string  =   str(integer)
