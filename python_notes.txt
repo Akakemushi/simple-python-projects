@@ -13,7 +13,28 @@
   mix different operators.  For example   10 // 2 * 1 * "Bob" will not work, as the // operator is present.
 - python convention is to use underscores for variable names (but this textbook uses camelcase)
 - you can do comparisons between ints and floats.   (eg.  14 == 14.00     would be true.)
-- N
+- comparisons between strings and non-strings will always be False.
+- ORDER OF OPERATIONS  1. Math (see syntax) and comparison operators evaluate. 2. "not" operators. 3. "and" operators.  4. "or" operators are last.
+  2 + 2 == 4 and not 2 + 2 == 5 or 2 * 2 == 2 + 2
+  2 + 2 == 4 and not 2 + 2 == 5 or 4 == 2 + 2
+  4 == 4 and not 4 == 5 or 4 == 4
+  True and not False or True
+  True and True or True
+  True or True
+  True
+- HOW BLOCKS OF CODE WORK IN PYTHON:
+    Blocks begin when the indentation increases.
+    Blocks can contain other blocks.
+    Blocks end when the indentation decreases to zero or to a containing block's indentation.
+    Example below:
+    name = 'Mary'
+    password = 'swordfish'
+    if name == 'Mary':
+      print('Hello, Mary')
+        if password == 'swordfish':
+          print('Access granted.')
+        else:
+          print('Wrong password.')
 
 
 SYNTAX NOTES
@@ -47,3 +68,9 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
 - arrays           =     as usual, [1, 2, 3]    but they are called "lists"  ??
 - booleans        =      assign with True    or   False.  fisrt letter MUST be capitalized, and you cannot use True  or  False as a variable name.
 - comparisons     =      exactly the same as Ruby, Javascript, etc.     ==  !=   <    >   <=    >=
+- &&              =      keyword   "and"
+- ||              =      keyword   "or"
+- !               =      keyword   "not"    not True    will evaluate to False.   not not not not True    will evaluate to True.
+- conditionals    =      the condition followed by a COLON... (not curly brackets or parentheses)      if 5 > 4:    if "andy" == "tom":   else:
+- if statements   =      Python uses  "if condition:"   "elif condition:"  and   "else:"
+
