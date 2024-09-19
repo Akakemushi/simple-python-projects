@@ -12,6 +12,8 @@
 - you can put as many * as you want in str * int expressions, and it doesnt matter if they're before or after the str (or both) however you can't
   mix different operators.  For example   10 // 2 * 1 * "Bob" will not work, as the // operator is present.
 - python convention is to use underscores for variable names (but this textbook uses camelcase)
+- you can do comparisons between ints and floats.   (eg.  14 == 14.00     would be true.)
+- N
 
 
 SYNTAX NOTES
@@ -32,7 +34,16 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                naming restrictions.  1. alphanumeric and underscore only.  2. must not start with number 3. no spaces.
                variable names are CaSe SeNsItIvE
 - user input = input()     you can add a message or question inside the parenthesis  input("What's your name?")
+               !!IMPORTANT!!   Input will ALWAYS be a string,
 - string length =   len(var)   or   len("String literal")
 - array length  =   len(array)   or    len([2, 3, 4, 5])
-- string to int  =   int(string variable)
-- int to string  =   str(integer)
+- string/float to int  =   int(string/float)        (in Ruby it's     .to_i)   NOTE: making a float an int will always round it down.
+- int/float to string  =   str(int/float)               (in Ruby it's     .to_s)
+- string/int to float  =   float(int/string)           (in Ruby it's    .to_f)   NOTE:  making an int a float will add a .0 at the end.
+- comments  =   use a hashtag to denote comments in python     #  this is a comments
+- string interpolation   =   might not exist... but normal concatenation does.  For example   , print("Hello" + your_name)
+- rounding numbers  =    round(float)  rounds to closest integer.
+- data type check   =     type(variable_name or value)
+- arrays           =     as usual, [1, 2, 3]    but they are called "lists"  ??
+- booleans        =      assign with True    or   False.  fisrt letter MUST be capitalized, and you cannot use True  or  False as a variable name.
+- comparisons     =      exactly the same as Ruby, Javascript, etc.     ==  !=   <    >   <=    >=
