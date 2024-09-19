@@ -73,4 +73,4 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
 - !               =      keyword   "not"    not True    will evaluate to False.   not not not not True    will evaluate to True.
 - conditionals    =      the condition followed by a COLON... (not curly brackets or parentheses)      if 5 > 4:    if "andy" == "tom":   else:
 - if statements   =      Python uses  "if condition:"   "elif condition:"  and   "else:"
-
+- while statements =     Use   "while condition:"
