@@ -74,3 +74,9 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
 - conditionals    =      the condition followed by a COLON... (not curly brackets or parentheses)      if 5 > 4:    if "andy" == "tom":   else:
 - if statements   =      Python uses  "if condition:"   "elif condition:"  and   "else:"
 - while statements =     Use   "while condition:"
+- break statement  =     just type the keyword  "break"  with nothing after it to exit a loop prematurely.
+- (NEW!) continue  =     just type the keyword  "continue" with nothing after it.   What this does is jump to the START of the while loop prematurely.
+- Falsey values    =     0  (an int)  0.0  (a float)  and  ''   (an empty string)   all evaluate to False in Python.
+- For  loop        =     Example-     for i in range(5):          the part  "in range(5)"  is unique.   It sets the falue of i to 0 initially,
+                         then counts 5 times, so i will equal    i = 0,  i = 1, i = 2, i = 3, i = 4   stop.
+                         Note:  The "continue" statement in a For loop will ITERATE and then jump to the start.

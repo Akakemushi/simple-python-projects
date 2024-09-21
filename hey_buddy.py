@@ -1,3 +1,3 @@
-print('What is your age?')
-age = input()
-print('You will be ' + str(int(age) + 1) + ' in a year.')
+print('My name is')
+for i in range(5):
+        print('Jimmy Five Times ' + str(i) )
