@@ -42,6 +42,11 @@
 
 SYNTAX NOTES
 printscreen =   print("")  single quotes also work.   integers without any quotes also work.
+interpolation =  To do interpolation, use the symbols %s, %i, or %f directly within the string-- then, after the final quotation mark (but still within
+              the parentheses), type a   %    followed by ANOTHER set of parentheses within the first set of parentheses.
+              Inside of the secondary parentheses you should include (in order) the values that will be filled into the string.
+              The values provided as arguments can be either direct values (such as, 6,  3.14,  or "giraffe") or variable names.
+concatenation =   nothing new here.  Just use ' + ' between two strings.   "I am " + "Jason"
 operators =  same as usual, but there is ORDER OF OPERATION in python, and priority is as follows from top to bottom...
               ( ) parentheses.  Things inside of parentheses are evaluated first.
               **  exponent
@@ -65,7 +70,6 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
 - int/float to string  =   str(int/float)               (in Ruby it's     .to_s)
 - string/int to float  =   float(int/string)           (in Ruby it's    .to_f)   NOTE:  making an int a float will add a .0 at the end.
 - comments  =   use a hashtag to denote comments in python     #  this is a comments
-- string interpolation   =   might not exist... but normal concatenation does.  For example   , print("Hello" + your_name)
 - rounding numbers  =    round(float)  rounds to closest integer.
 - data type check   =     type(variable_name or value)
 - arrays           =     as usual, [1, 2, 3]    but they are called "lists"  ??
