@@ -38,10 +38,32 @@
 - Libraries/modules are needed to access other functions in Python.  SEE LIBRARIES SECTION FOR LIST
   To include/access those functions in your program, you use the "import" keyword, the name of the module,
   and optionally, more module names separated by commas  DO NOT OVERWRITE MODULES BY GIVING YOUR FILES THE SAME NAME!!
+- Keyword Arguments  ---  What is it?  Most arguments are identified by their POSITION in the parentheses, but keyword arguments are called by name
+  right before the argument passed to them, like so...  print("Hello", end="")    <-- here "end" is an optional parameter being filled in. (If you careful
+  to know, it declares what the final character(s) will be, replacing the default new line character. Another you could use with print() is the "sep" argument
+  which replaces the default space with something else when multiple strings are given to print.
+- Python Call stack is FILO, First in, Last out.  If a function calls another function, that second function is completed and returns before the first
+  function can continue.  Pretty standard.  Terminology wise, when a new function is called, a "Frame Object" is added to the top of the stack.
+- !!SCOPE!!   Variables that are assigned within a function call are in the "local" scope, while variables assigned OUTSIDE of any function are in the "global".
+  A variable must be in one or the other, it cannot be in both.  THIS IS IMPORTANT!  Local code can READ global variables, but it cannot CHANGE/OVERWRITE
+  global variables!  This means that it's OKAY to have a global and a local variable with the same name, as they won't interfere with one another.
+  Finally, if you declare a local variable with the same name as a global, the local code will prioritize the local value over the global one, but if a
+  variable name is used that has not yet been created locally, the function will assume its a global that you're talking about.
+  Note: If you try to READ from the global version, then DECLARE the local version afterwards, you will get an error.  You can't do that.  It really is
+  global or local ONLY. Not both.
+  BEST PRACTICE:  Even though you technically CAN use variables with the same name... don't.  It can get confusing which variable is being referenced.
+  I don't think that's the case in Ruby... I think local code CAN overwrite globals.
+- FORCING a GLOBAL   In regards to scope above, if you MUST alter a global variable from within a local scope, you can do so by invoking the "global" keyword.
+  At the top of the function,   use the keyword "global" followed by the name of the global variable.   This sort of "imports" the actual global variable
+  into the local scope, and from there, you can set its value to something else as normal.  Doing this will NOT create a local variable with that name.
 
 
 SYNTAX NOTES
 printscreen =   print("")  single quotes also work.   integers without any quotes also work.
+                You can pass multiple strings to print(), separated by commas, and they will be printed, separated by a space.
+                You can override the default spaces and new line characters that the print() function adds by using the Keyword Arguments "sep" and "end"
+                respectively, like so....    print("Hello", end="")  <-- stops console from going to next line.   print("milk", "eggs", "spam", sep=", ")
+                will change   the output    "milk eggs spam"  into   "milk, eggs, spam"
 interpolation =  To do interpolation, use the symbols %s, %i, or %f directly within the string-- then, after the final quotation mark (but still within
               the parentheses), type a   %    followed by ANOTHER set of parentheses within the first set of parentheses.
               Inside of the secondary parentheses you should include (in order) the values that will be filled into the string.
@@ -99,7 +121,26 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                          This function is for int  only, it will not work with floats.  You can, however, use negative numbers, and even count backwards.
 - rand()                 (must import random library) random.randint(start, end)  The arguments are inclusive, so the start and end numbers can appear as results.
 - create a function   =  use the "def" keyword, followed by the name of the function, parentheses, and a colon.     def hello():
-
+                         To add parameters to your function, simply add one or more variable names in the parentheses, separated by commas.
+                         It looks like you don't need to declare what data type your parameters can accept... HOWEVER, how those variables are used within
+                         the function block will of course expect the values to be of a certain type... So it looks like it's up to the coder to keep
+                         track of this.
+- return values       =  In Python, you must explicitly use the "return" keyword followed by a value or an expression (that will be evaluated).
+                         Note that the "return" line immediately exits the function, ignoring anything below that line.
+                         Note that you can pass return values as arguments to other functions.
+                         Any function that does not explicitly return anything, will return "None" by default (see next).  Likewise, when "return" is used
+                         without anything after it, the result will also be "None".
+- Nil/Null            =  In Python, the "lack of any value" value is called "None" (with a capital N).  None is its own data type, and is the only value possible.
+- Error Handling      =  Use the "try" and "except" statements.  Code that could potentially throw an error is put into a "try" clause.  Then, if an error
+                         DOES occur, rather than crashing, the code moves to the following "except" block.  For example, try dividing by zero....
+                         def spam(divided_by):
+                             try:
+                                 return 42 / divided_by
+                             except ZeroDivisionError:
+                                 print("Error: Invalid argument.")
+                         Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
+                         Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
+                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError
 
 STANDARD LIBRARIES
 Name        Description
