@@ -150,3 +150,4 @@ sys         contains functions related to the.. system? I guess? Such as sys.exi
             selects or types "exit")
 os
 math        contains functions related to math (duh).  such as round(float) and abs(int/float) which turns values positive.
+time        contains functions for clocks and waiting, such as time.sleep(0.1)  (pause for 1/10 of a second)
