@@ -120,6 +120,7 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                          range(5, 11, 2)  produces  5, 7, 9  <-----Note that "10" is not produced because the last "skip" would skip past the end.
                          This function is for int  only, it will not work with floats.  You can, however, use negative numbers, and even count backwards.
 - rand()                 (must import random library) random.randint(start, end)  The arguments are inclusive, so the start and end numbers can appear as results.
+- wait()                 (must import time library)  time.sleep(time in seconds)  argument is a float that represents seconds.
 - create a function   =  use the "def" keyword, followed by the name of the function, parentheses, and a colon.     def hello():
                          To add parameters to your function, simply add one or more variable names in the parentheses, separated by commas.
                          It looks like you don't need to declare what data type your parameters can accept... HOWEVER, how those variables are used within
@@ -140,7 +141,7 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                                  print("Error: Invalid argument.")
                          Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
                          Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
-                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError
+                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt
 
 STANDARD LIBRARIES
 Name        Description
