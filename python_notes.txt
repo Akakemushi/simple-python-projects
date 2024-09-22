@@ -35,6 +35,9 @@
           print('Access granted.')
         else:
           print('Wrong password.')
+- Libraries/modules are needed to access other functions in Python.  SEE LIBRARIES SECTION FOR LIST
+  To include/access those functions in your program, you use the "import" keyword, the name of the module,
+  and optionally, more module names separated by commas  DO NOT OVERWRITE MODULES BY GIVING YOUR FILES THE SAME NAME!!
 
 
 SYNTAX NOTES
@@ -80,3 +83,23 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
 - For  loop        =     Example-     for i in range(5):          the part  "in range(5)"  is unique.   It sets the falue of i to 0 initially,
                          then counts 5 times, so i will equal    i = 0,  i = 1, i = 2, i = 3, i = 4   stop.
                          Note:  The "continue" statement in a For loop will ITERATE and then jump to the start.
+- More about range()  =  The range() function can have 1, 2, or 3 arguments.  If it has only 1 argument, then the range is assumed to start at 0, and
+                         stops just before the argument given.  If TWO arguments are given, then the first argument becomes the STARTING point, and that
+                         is used instead of 0.  If THREE arguments are used, the third argument is the "step" setting, or maybe think of it as the interval.
+                         It's the number of steps that the iteration skips over.  Examples:
+                         range(11) produces 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+                         range(5, 11) produces  5, 6, 7, 8, 9, 10   <---Note that it produces 5, but not 10.
+                         range(5, 11, 2)  produces  5, 7, 9  <-----Note that "10" is not produced because the last "skip" would skip past the end.
+                         This function is for int  only, it will not work with floats.  You can, however, use negative numbers, and even count backwards.
+- rand()                 (must import random library) random.randint(start, end)  The arguments are inclusive, so the start and end numbers can appear as results.
+
+
+
+STANDARD LIBRARIES
+Name        Description
+random      contains functions related to random number generation, such as random.randint(1, 10)
+sys         contains functions related to the.. system? I guess? Such as sys.exit(), which will terminate the program immediately.
+            (normally it terminates when it reaches the bottom.  This is useful for an infinitely looping menu that doesnt exit until the user
+            selects or types "exit")
+os
+math
