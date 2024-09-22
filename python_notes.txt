@@ -71,6 +71,7 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
 - string/int to float  =   float(int/string)           (in Ruby it's    .to_f)   NOTE:  making an int a float will add a .0 at the end.
 - comments  =   use a hashtag to denote comments in python     #  this is a comments
 - rounding numbers  =    round(float)  rounds to closest integer.
+- absolute value    =     abs(int or float)  will turn the number positive if it is negative.
 - data type check   =     type(variable_name or value)
 - arrays           =     as usual, [1, 2, 3]    but they are called "lists"  ??
 - booleans        =      assign with True    or   False.  fisrt letter MUST be capitalized, and you cannot use True  or  False as a variable name.
@@ -87,6 +88,7 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
 - For  loop        =     Example-     for i in range(5):          the part  "in range(5)"  is unique.   It sets the falue of i to 0 initially,
                          then counts 5 times, so i will equal    i = 0,  i = 1, i = 2, i = 3, i = 4   stop.
                          Note:  The "continue" statement in a For loop will ITERATE and then jump to the start.
+                         Also, be careful... the variable name you give the incrementor (such as "i") is apparently VISIBLE to code OUTSIDE of that loop!
 - More about range()  =  The range() function can have 1, 2, or 3 arguments.  If it has only 1 argument, then the range is assumed to start at 0, and
                          stops just before the argument given.  If TWO arguments are given, then the first argument becomes the STARTING point, and that
                          is used instead of 0.  If THREE arguments are used, the third argument is the "step" setting, or maybe think of it as the interval.
@@ -96,7 +98,7 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                          range(5, 11, 2)  produces  5, 7, 9  <-----Note that "10" is not produced because the last "skip" would skip past the end.
                          This function is for int  only, it will not work with floats.  You can, however, use negative numbers, and even count backwards.
 - rand()                 (must import random library) random.randint(start, end)  The arguments are inclusive, so the start and end numbers can appear as results.
-
+- create a function   =  use the "def" keyword, followed by the name of the function, parentheses, and a colon.     def hello():
 
 
 STANDARD LIBRARIES
@@ -106,4 +108,4 @@ sys         contains functions related to the.. system? I guess? Such as sys.exi
             (normally it terminates when it reaches the bottom.  This is useful for an infinitely looping menu that doesnt exit until the user
             selects or types "exit")
 os
-math
+math        contains functions related to math (duh).  such as round(float) and abs(int/float) which turns values positive.
