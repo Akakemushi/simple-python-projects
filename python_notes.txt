@@ -72,7 +72,7 @@ concatenation =   nothing new here.  Just use ' + ' between two strings.   "I am
 operators =  same as usual, but there is ORDER OF OPERATION in python, and priority is as follows from top to bottom...
               ( ) parentheses.  Things inside of parentheses are evaluated first.
               **  exponent
-              %  modulus (aka remaineder)
+              %  modulus (aka remainder)
               //  Integer division/floored quotient  (it's just division, but it drops the remainder, if one exists (aka rounds down))
               /   division
               *   multiplication
@@ -88,6 +88,10 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                !!IMPORTANT!!   Input will ALWAYS be a string,
 - string length =   len(var)   or   len("String literal")
 - array length  =   len(array)   or    len([2, 3, 4, 5])
+- arrays         =      arrays in Python are called "lists", and the array itself is the "list value", which can be confusing.
+                        So for example   pets = ["dog", "cat", "sloth"]     the "list value" would be ["dog", "cat", "sloth"], since that is
+                        the value of "pets".    Stuff inside the array are called "items", and they are separated by commas, as normal.
+                        You can make a list of lists  [[1, 2, 3], ["dog", "cat", "hat"]]
 - string/float to int  =   int(string/float)        (in Ruby it's     .to_i)   NOTE: making a float an int will always round it down.
 - int/float to string  =   str(int/float)               (in Ruby it's     .to_s)
 - string/int to float  =   float(int/string)           (in Ruby it's    .to_f)   NOTE:  making an int a float will add a .0 at the end.
@@ -95,7 +99,6 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
 - rounding numbers  =    round(float)  rounds to closest integer.
 - absolute value    =     abs(int or float)  will turn the number positive if it is negative.
 - data type check   =     type(variable_name or value)
-- arrays           =     as usual, [1, 2, 3]    but they are called "lists"  ??
 - booleans        =      assign with True    or   False.  fisrt letter MUST be capitalized, and you cannot use True  or  False as a variable name.
 - comparisons     =      exactly the same as Ruby, Javascript, etc.     ==  !=   <    >   <=    >=
 - &&              =      keyword   "and"
@@ -141,7 +144,7 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                                  print("Error: Invalid argument.")
                          Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
                          Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
-                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt
+                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError
 
 STANDARD LIBRARIES
 Name        Description
