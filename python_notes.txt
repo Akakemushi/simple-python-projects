@@ -75,15 +75,16 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
               %  modulus (aka remainder)
               //  Integer division/floored quotient  (it's just division, but it drops the remainder, if one exists (aka rounds down))
               /   division
-              *   multiplication
+              *   multiplication (works on strings and arrays too)
               -   subtraction
-              +   addition
+              +   addition (also concatenation for strings and arrays)
               SO  as an example,  7 - 3 ** 2  evaluates to -2, not 16, because the exponent is evaluated FIRST.
               You can also STACK exponents, so 2 ** 2 ** 4  evaluates to 65536 (huge), not 256.  The last exponent is evaluated and THEN the result is
               treated as the exponent to the next exponent.
 - variables =  works like Ruby.  Just put the variable name = value.  You don't need to specify data type.  n = 3, name = "Bob"
                naming restrictions.  1. alphanumeric and underscore only.  2. must not start with number 3. no spaces.
                variable names are CaSe SeNsItIvE
+               you can delete a variable (and its value) using the keyword "del".  del variable_name (though there's rarely a need for this.)
 - user input = input()     you can add a message or question inside the parenthesis  input("What's your name?")
                !!IMPORTANT!!   Input will ALWAYS be a string,
 - string length =   len(var)   or   len("String literal")
@@ -91,7 +92,19 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
 - arrays         =      arrays in Python are called "lists", and the array itself is the "list value", which can be confusing.
                         So for example   pets = ["dog", "cat", "sloth"]     the "list value" would be ["dog", "cat", "sloth"], since that is
                         the value of "pets".    Stuff inside the array are called "items", and they are separated by commas, as normal.
-                        You can make a list of lists  [[1, 2, 3], ["dog", "cat", "hat"]]
+                        You can make a list of lists  [[1, 2, 3], ["dog", "cat", "hat"]].
+                        Lists CAN contain items of different data types, so   list = ["apple", 3, 5.7] is fine.
+                        Like Ruby, you can get the LAST item by doing   list[-1]  and so on going backwards.
+                        You can concatenate and multiply lists just like you can with strings using + and *
+- array slice        =  To get an array slice, the syntax is  array[1:5]   where the first is the start of the slice, and the second is the stop.
+                        CAREFUL!  The second number means "go up to but NOT include this" Also, don't get confused and think that the second number
+                        means the length of the slice... it doesn't.  You can set variable values with slices.  slice =  array[3:5]
+                        Shortcuts -   by leaving out a number such as  [:5]  or  [3:]  you are telling Python that you want to start at the
+                        beginning, or go all the way to the end, respectively.
+- array item removal =  to delete a single item from an array, use the keyword  "del", followed by the index like so:   del  array[2]
+                        all the items after that index get moved forward. You can also delete using slice notation (see above)
+- array iteration   =   iterate over an array with a for loop, like so:   for your_variable_name in name_of_array:  this is for_each in Ruby.
+- each_with_index   =   in Python you can do something like.....  for i in range(len(array)):    and use "i" for the index number and data.
 - string/float to int  =   int(string/float)        (in Ruby it's     .to_i)   NOTE: making a float an int will always round it down.
 - int/float to string  =   str(int/float)               (in Ruby it's     .to_s)
 - string/int to float  =   float(int/string)           (in Ruby it's    .to_f)   NOTE:  making an int a float will add a .0 at the end.
