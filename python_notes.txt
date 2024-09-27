@@ -36,7 +36,6 @@
           print('Access granted.')
         else:
           print('Wrong password.')
-
   Exceptions exist to this rule though, for example, you can have an array/list span across several lines, and Python is smart enough to know
   that the list is not done until it finds the closing bracket ]
   There is also an "override" method when you want to force a particularly long line of code to be on two lines for readability.  To do that,
@@ -52,17 +51,59 @@
   function can continue.  Pretty standard.  Terminology wise, when a new function is called, a "Frame Object" is added to the top of the stack.
 - !!SCOPE!!   Variables that are assigned within a function call are in the "local" scope, while variables assigned OUTSIDE of any function are in the "global".
   A variable must be in one or the other, it cannot be in both.  THIS IS IMPORTANT!  Local code can READ global variables, but it cannot CHANGE/OVERWRITE
-  global variables!  This means that it's OKAY to have a global and a local variable with the same name, as they won't interfere with one another.
+  global variables!  This means that it's technically okay to have a global and a local variable with the same name, as they won't interfere with one another.
   Finally, if you declare a local variable with the same name as a global, the local code will prioritize the local value over the global one, but if a
   variable name is used that has not yet been created locally, the function will assume its a global that you're talking about.
   Note: If you try to READ from the global version, then DECLARE the local version afterwards, you will get an error.  You can't do that.  It really is
-  global or local ONLY. Not both.
+  global or local ONLY. Not both.  There IS a way to modify global variable from the local scope, with the "global" keyword (explained later)
   BEST PRACTICE:  Even though you technically CAN use variables with the same name... don't.  It can get confusing which variable is being referenced.
   I don't think that's the case in Ruby... I think local code CAN overwrite globals.
 - FORCING a GLOBAL   In regards to scope above, if you MUST alter a global variable from within a local scope, you can do so by invoking the "global" keyword.
   At the top of the function,   use the keyword "global" followed by the name of the global variable.   This sort of "imports" the actual global variable
   into the local scope, and from there, you can set its value to something else as normal.  Doing this will NOT create a local variable with that name.
-
+- SEQUENCE DATA TYPES  Python has a few different sequence data types, which are lists, strings, range objects returned by range(), and tuples.  Many of The
+  things you can do with lists can also be done with strings and other values of sequence types: indexing, slicing, using them with for loops, with len(),
+  and with the in and not in operators.
+- MUTABLE and IMMUTABLE DATA TYPES  Mutable things like lists can have values added, removed or changed.  These terms are important for the definition of
+  "mutated", as "overwriting" means that the original is completely thrown out, and something entirely new replaces it.  Strings in Python are Immutable.
+  That means that while you can READ specific parts of a string using indicies and slices, you cannot reassign just a part of the string... you have to
+  reassign the whole thing.   name = "Jason"    name[2] = "x"   will NOT work.  You would need to do some splitting and concatenation for that, invoking
+  new / temporary variables.  This will become important when dealing with "Passing References". In short, there are MUTABLE and IMMUTABLE areas in CPU memory.
+- TUPLES  wft is a tuple?  Well it's basically the "IMMUTABLE" clone of the LIST data type.  They are created just like arrays, but with parentheses instead
+  of square brackets.  greetings = ("sup", "hi", 3.5, -9).  You can read indexes and slices from tuples, just like lists, but you can't overwrite
+  single indexes like you can with lists.    greeting[0] = "bro" will NOT work.     Also, if you need to create a tuple that only has one value in it,
+  you'll need to follow that value with a comma, otherwise, Python will think you're just declaring a simple str, int, or float that happens to be inside
+  some parentheses.  It has no way to distinguish parentheses used in math from tuple parentheses unless there's a comma inside.
+  names = ("Jason",)  is a tuple,   names = ("Jason") is a string.   So why use these? Well, Python can implement some optimizations that make code using
+  tuples slightly faster than code using lists.   It also indicates to others some sequential data that you don't intend to change.
+- MEMORY IN PYTHON   Variables just store a reference to some value in memory, so when you make another variable reference a previous variable, you're
+  actually assigning it the reference to that data, not the data itself.  So if later on you go and change what the first variable is set to, the first
+  variable and the second variable will now be pointing to different places in memory.  Let me show you.
+    spam = 42      spam points to where 42 is located in memory.
+    cheese = spam       cheese points to where spam is CURRENTLY pointing to in memory, so 42.
+    spam = 100     spam is now pointing to somewhere else in memory, where 100 is.  But cheese is still pointing to 42.
+    spam   (outputs  100)
+    cheese  (outputs   42)
+  Interestingly enough, I tested this out in Ruby, and Ruby does the same thing, which I didn't know.
+  What this means is that when spam was reassigned to 100 above, it did not "change" 42 into 100.  It opened up a new spot in memory, put 100 inside it,
+  and referenced that instead.  The spot where 42 resides was left untouched.  Now, MUTABLE data DOES change that exact spot in memory, so anything else
+  that references that spot will also "see" the change.  To play around with this, you can get the memory address of some value by
+  doing id(variable or value here), and you'll get some arbitrary string of numbers representing the address (which will vary). Check this test out...
+    In [2]: num = 12
+    In [3]: id(num)
+    Out[3]: 140228057547344
+    In [4]: num2 = num
+    In [5]: id(num2)
+    Out[5]: 140228057547344     <--- num2's address is the same as num's
+    In [6]: num = 42
+    In [7]: id(num)
+    Out[7]: 140228057548304     <---- num's addres changed...
+    In [8]: id(num2)
+    Out[8]: 140228057547344     <---- but num2's did not.
+  PASSING LISTS/REFERENCES AS ARGUMENTS     This is an important concept to grasp in order to avoid difficult bugs dealing with memory and pointers.  So,
+    when passing IMMUTABLE data types into functions/methods, you're usually fine because copies are made locally, which will not affect the global versions.
+    However, when passing MUTABLE data types like lists, you're passing in the reference to the original value, and therefore any changes you make to
+    that array locally, WILL CHANGE the original as well, since its referencing the same place in memory.
 
 SYNTAX NOTES
 - printscreen =         print("")  single quotes also work.   integers without any quotes also work.
@@ -132,9 +173,13 @@ SYNTAX NOTES
                             for index, item in enumerate(array_name):
                               print("Index ") + str(index) + " in this list is: " + item)
                         Note here that the words "index" and "item" have been used, but you could use any variable name.
+- tuples            =   tuples are created just like lists/arrays, but with parentheses instead of square brackets. ("hi", "hello", "sup")
 - string/float to int  =   int(string/float)        (in Ruby it's     .to_i)   NOTE: making a float an int will always round it down.
 - int/float to string  =   str(int/float)               (in Ruby it's     .to_s)
 - string/int to float  =   float(int/string)           (in Ruby it's    .to_f)   NOTE:  making an int a float will add a .0 at the end.
+- string/tuple to list =   list(str/tuple)         (in Ruby it's   .to_a)
+- list/string to tuple =   tuple(str/list)      (not in Ruby)
+                         CAUTION!  Note that the above 5 type converters ONLY MAKE COPIES; you need to catch the return value in a variable.
 - comments           =   Use a hashtag to denote comments in python     #  this is a comments
 - rounding numbers  =    round(float)  rounds to closest integer.
 - absolute value    =    abs(int or float)  will turn the number positive if it is negative.
