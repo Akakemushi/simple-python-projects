@@ -27,6 +27,7 @@
     Blocks can contain other blocks.
     Blocks end when the indentation decreases to zero or to a containing block's indentation.
     Example below:
+
     name = 'Mary'
     password = 'swordfish'
     if name == 'Mary':
@@ -35,6 +36,11 @@
           print('Access granted.')
         else:
           print('Wrong password.')
+
+  Exceptions exist to this rule though, for example, you can have an array/list span across several lines, and Python is smart enough to know
+  that the list is not done until it finds the closing bracket ]
+  There is also an "override" method when you want to force a particularly long line of code to be on two lines for readability.  To do that,
+  you can "pause" the line of code by ending the line with the backslash character   "\".  This tells Python that there is more to come on the next line.
 - Libraries/modules are needed to access other functions in Python.  SEE LIBRARIES SECTION FOR LIST
   To include/access those functions in your program, you use the "import" keyword, the name of the module,
   and optionally, more module names separated by commas  DO NOT OVERWRITE MODULES BY GIVING YOUR FILES THE SAME NAME!!
@@ -59,36 +65,51 @@
 
 
 SYNTAX NOTES
-printscreen =   print("")  single quotes also work.   integers without any quotes also work.
-                You can pass multiple strings to print(), separated by commas, and they will be printed, separated by a space.
-                You can override the default spaces and new line characters that the print() function adds by using the Keyword Arguments "sep" and "end"
-                respectively, like so....    print("Hello", end="")  <-- stops console from going to next line.   print("milk", "eggs", "spam", sep=", ")
-                will change   the output    "milk eggs spam"  into   "milk, eggs, spam"
-interpolation =  To do interpolation, use the symbols %s, %i, or %f directly within the string-- then, after the final quotation mark (but still within
-              the parentheses), type a   %    followed by ANOTHER set of parentheses within the first set of parentheses.
-              Inside of the secondary parentheses you should include (in order) the values that will be filled into the string.
-              The values provided as arguments can be either direct values (such as, 6,  3.14,  or "giraffe") or variable names.
-concatenation =   nothing new here.  Just use ' + ' between two strings.   "I am " + "Jason"
-operators =  same as usual, but there is ORDER OF OPERATION in python, and priority is as follows from top to bottom...
-              ( ) parentheses.  Things inside of parentheses are evaluated first.
-              **  exponent
-              %  modulus (aka remainder)
-              //  Integer division/floored quotient  (it's just division, but it drops the remainder, if one exists (aka rounds down))
-              /   division
-              *   multiplication (works on strings and arrays too)
-              -   subtraction
-              +   addition (also concatenation for strings and arrays)
-              SO  as an example,  7 - 3 ** 2  evaluates to -2, not 16, because the exponent is evaluated FIRST.
-              You can also STACK exponents, so 2 ** 2 ** 4  evaluates to 65536 (huge), not 256.  The last exponent is evaluated and THEN the result is
-              treated as the exponent to the next exponent.
-- variables =  works like Ruby.  Just put the variable name = value.  You don't need to specify data type.  n = 3, name = "Bob"
-               naming restrictions.  1. alphanumeric and underscore only.  2. must not start with number 3. no spaces.
-               variable names are CaSe SeNsItIvE
-               you can delete a variable (and its value) using the keyword "del".  del variable_name (though there's rarely a need for this.)
-- user input = input()     you can add a message or question inside the parenthesis  input("What's your name?")
-               !!IMPORTANT!!   Input will ALWAYS be a string,
-- string length =   len(var)   or   len("String literal")
-- array length  =   len(array)   or    len([2, 3, 4, 5])
+- printscreen =         print("")  single quotes also work.   integers without any quotes also work.
+                        You can pass multiple strings to print(), separated by commas, and they will be printed, separated by a space.
+                        You can override the default spaces and new line characters that the print() function adds by using the Keyword Arguments "sep" and "end"
+                        respectively, like so....    print("Hello", end="")  <-- stops console from going to next line.   print("milk", "eggs", "spam", sep=", ")
+                        will change   the output    "milk eggs spam"  into   "milk, eggs, spam"
+- interpolation =       To do interpolation, use the symbols %s, %i, or %f directly within the string-- then, after the final quotation mark (but still within
+                        the parentheses), type a   %    followed by ANOTHER set of parentheses within the first set of parentheses.
+                        Inside of the secondary parentheses you should include (in order) the values that will be filled into the string.
+                        The values provided as arguments can be either direct values (such as, 6,  3.14,  or "giraffe") or variable names.
+- concatenation =       nothing new here.  Just use ' + ' between two strings.   "I am " + "Jason"
+- operators =           same as usual, but there is ORDER OF OPERATION in python, and priority is as follows from top to bottom...
+                            ( ) parentheses.  Things inside of parentheses are evaluated first.
+                            **  exponent
+                            %  modulus (aka remainder)
+                            //  Integer division/floored quotient  (it's just division, but it drops the remainder, if one exists (aka rounds down))
+                            /   division
+                            *   multiplication (works on strings and arrays too)
+                            -   subtraction
+                            +   addition (also concatenation for strings and arrays)
+                        SO  as an example,  7 - 3 ** 2  evaluates to -2, not 16, because the exponent is evaluated FIRST.
+                        You can also STACK exponents, so 2 ** 2 ** 4  evaluates to 65536 (huge), not 256.  The last exponent is evaluated and THEN the result is
+                        treated as the exponent to the next exponent.   There are also shortcuts, as with other languages, as follows:
+                            += x  the  shorthand  for   num = num + x      (also works on strings!)
+                            -= x
+                            *= x      (also works on strings!)
+                            /= x
+                            %= x
+- variables =           works like Ruby.  Just put the variable name = value.  You don't need to specify data type.  n = 3, name = "Bob"
+                        naming restrictions.  1. alphanumeric and underscore only.  2. must not start with number 3. no spaces.
+                        variable names are CaSe SeNsItIvE
+                        you can delete a variable (and its value) using the keyword "del".  del variable_name (though there's rarely a need for this.)
+                        There is a shortcut for assigning multiple variables at once, if you have an array(list) for them.  Basically, instead of this...
+                            cat = ["fat", "gray", "loud"]
+                            size = cat[0]
+                            color = cat[1]
+                            disposition = cat[2]
+                        you could write this in 2 lines of code instead...
+                            cat = ["fat", "gray", "loud"]
+                            size, color, disposition = cat
+                        Naturally, the order matters, and the number of variables MUST equal the number of list items.
+
+- user input =          input()     you can add a message or question inside the parenthesis  input("What's your name?")
+                        !!IMPORTANT!!   Input will ALWAYS be a string,
+- string length =       len(var)   or   len("String literal")
+- array length  =       len(array)   or    len([2, 3, 4, 5])
 - arrays         =      arrays in Python are called "lists", and the array itself is the "list value", which can be confusing.
                         So for example   pets = ["dog", "cat", "sloth"]     the "list value" would be ["dog", "cat", "sloth"], since that is
                         the value of "pets".    Stuff inside the array are called "items", and they are separated by commas, as normal.
@@ -101,17 +122,23 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                         means the length of the slice... it doesn't.  You can set variable values with slices.  slice =  array[3:5]
                         Shortcuts -   by leaving out a number such as  [:5]  or  [3:]  you are telling Python that you want to start at the
                         beginning, or go all the way to the end, respectively.
-- array item removal =  to delete a single item from an array, use the keyword  "del", followed by the index like so:   del  array[2]
+- array item removal =  To delete a single item from an array, use the keyword  "del", followed by the index like so:   del  array[2]
                         all the items after that index get moved forward. You can also delete using slice notation (see above)
-- array iteration   =   iterate over an array with a for loop, like so:   for your_variable_name in name_of_array:  this is for_each in Ruby.
-- each_with_index   =   in Python you can do something like.....  for i in range(len(array)):    and use "i" for the index number and data.
+- array include?     =  Works like a boolean operator such as == or > .  use keywords "in" and "not in" like so:
+                        "howdy" in ["hello", "hi", "howdy", "heyas"]    <-- this would evaluate to True.
+- array iteration   =   I over an array with a for loop, like so:   for your_variable_name in name_of_array:  this is for_each in Ruby.
+- each_with_index   =   In Python you can do something like.....  for i in range(len(array)):    and use "i" for the index number and data.
+                        Alternatively, you can use the "enumerate() function like so:
+                            for index, item in enumerate(array_name):
+                              print("Index ") + str(index) + " in this list is: " + item)
+                        Note here that the words "index" and "item" have been used, but you could use any variable name.
 - string/float to int  =   int(string/float)        (in Ruby it's     .to_i)   NOTE: making a float an int will always round it down.
 - int/float to string  =   str(int/float)               (in Ruby it's     .to_s)
 - string/int to float  =   float(int/string)           (in Ruby it's    .to_f)   NOTE:  making an int a float will add a .0 at the end.
-- comments  =   use a hashtag to denote comments in python     #  this is a comments
+- comments           =   Use a hashtag to denote comments in python     #  this is a comments
 - rounding numbers  =    round(float)  rounds to closest integer.
-- absolute value    =     abs(int or float)  will turn the number positive if it is negative.
-- data type check   =     type(variable_name or value)
+- absolute value    =    abs(int or float)  will turn the number positive if it is negative.
+- data type check   =    type(variable_name or value)
 - booleans        =      assign with True    or   False.  fisrt letter MUST be capitalized, and you cannot use True  or  False as a variable name.
 - comparisons     =      exactly the same as Ruby, Javascript, etc.     ==  !=   <    >   <=    >=
 - &&              =      keyword   "and"
@@ -135,13 +162,32 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                          range(5, 11) produces  5, 6, 7, 8, 9, 10   <---Note that it produces 5, but not 10.
                          range(5, 11, 2)  produces  5, 7, 9  <-----Note that "10" is not produced because the last "skip" would skip past the end.
                          This function is for int  only, it will not work with floats.  You can, however, use negative numbers, and even count backwards.
-- rand()                 (must import random library) random.randint(start, end)  The arguments are inclusive, so the start and end numbers can appear as results.
+- random number          (must import random library) random.randint(start, end)  The arguments are inclusive, so the start and end numbers can appear as results.
+- random array item      (must import random library) random.choice(array_name)
+- shuffle array          (must import random library) random.shuffle(array_name) this shuffles the ORIGINAL array.  It doesn't make a copy.
 - wait()                 (must import time library)  time.sleep(time in seconds)  argument is a float that represents seconds.
-- create a function   =  use the "def" keyword, followed by the name of the function, parentheses, and a colon.     def hello():
+- functions              =  use the "def" keyword, followed by the name of the function, parentheses, and a colon.     def hello():
                          To add parameters to your function, simply add one or more variable names in the parentheses, separated by commas.
                          It looks like you don't need to declare what data type your parameters can accept... HOWEVER, how those variables are used within
                          the function block will of course expect the values to be of a certain type... So it looks like it's up to the coder to keep
                          track of this.
+- methods                just like a function, but it's called on a value.  This is very much like Ruby.  Call them with a dot "."  The main thing to
+                         remember is that in Python, you need the closing parentheses, even if it's empty.  Each data type has its own built-in methods.
+- array methods          FIND-- array.index("item_to_locate")    will return the index of the argument, if it exists (or the first instance of that argument
+                            if duplicates exist.)
+                         PUSH-- array.append(item_to_add)  adds the item to the end of the list. MODIFIES ORIGINAL LIST
+                         INSERT AT--  array.insert(index, item_to_insert) the item will take over that position in the
+                            index, and everything gets shoved over one from there. MODIFIES ORIGINAL LIST
+                         DELETE-- array.remove(item_to_remove)   removes the item (if it exists, error otherwise) and moves everything to fill the gap.
+                            (note that if you want to delete by INDEX and not VALUE, you need to use the "del" keyword function, detailed above.)
+                            (note that if duplicates exist, only the FIRST instance will be deleted.) MODIFIES ORIGINAL LIST
+                         POP--  array.pop()  does 2 things... it RETURNS the last item in the list, AND, it MODIFIES ORIGINAL LIST by deleting that last item.
+                         SORT--  array.sort()  sorts the array.  Works on strings and numbers, BUT not on lists containing BOTH strings and numbers.
+                            CAUTION!  This sorts things in ASCIIbetical order, so capitals will ALWAYS come before lower-case. If you want to avoid this,
+                            , use the optional keyword argument (key=str.lower) This option will NOT affect the values, just the sorting.
+                            There is an optional keyword argument available, (reverse=True) to sort a list in reverse order. MODIFIES ORIGINAL LIST
+                         REVERSE--  array.reverse()  reverses the items in a list AS THEY ARE. (i.e., it doesn't sort them, so don't get confused.)
+                            This is not the same thing as the keyword "reverse" mentioned in SORT.  MODIFIES ORIGINAL LIST
 - return values       =  In Python, you must explicitly use the "return" keyword followed by a value or an expression (that will be evaluated).
                          Note that the "return" line immediately exits the function, ignoring anything below that line.
                          Note that you can pass return values as arguments to other functions.
@@ -157,7 +203,7 @@ operators =  same as usual, but there is ORDER OF OPERATION in python, and prior
                                  print("Error: Invalid argument.")
                          Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
                          Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
-                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError
+                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError, AttributeError
 
 STANDARD LIBRARIES
 Name        Description
