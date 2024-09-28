@@ -1,3 +1,5 @@
+For anyone reading this, these are just my personal notes as I get to know the Python language and how it is similar/different from Ruby/Javascript.
+
 - pip is the package installer for Python. pip allows you to install additional Python libraries and packages from the Python Package Index (PyPI).
   It's useful for managing dependencies in Python projects. With pip, you can install packages like NumPy, Django, Flask, etc., by running commands
   such as       pip install package_name.
@@ -100,10 +102,30 @@
     Out[7]: 140228057548304     <---- num's addres changed...
     In [8]: id(num2)
     Out[8]: 140228057547344     <---- but num2's did not.
-  PASSING LISTS/REFERENCES AS ARGUMENTS     This is an important concept to grasp in order to avoid difficult bugs dealing with memory and pointers.  So,
+- PASSING LISTS/REFERENCES AS ARGUMENTS     This is an important concept to grasp in order to avoid difficult bugs dealing with memory and pointers.  So,
     when passing IMMUTABLE data types into functions/methods, you're usually fine because copies are made locally, which will not affect the global versions.
     However, when passing MUTABLE data types like lists, you're passing in the reference to the original value, and therefore any changes you make to
-    that array locally, WILL CHANGE the original as well, since its referencing the same place in memory.
+    that array locally, WILL CHANGE the original as well, since its referencing the same place in memory.  If you don't want that to happen, you have two
+    choices: either convert the data to a type that is immutable (such as from list to tuple), or import the copy library and use copy.copy(list) to make
+    a second list that you can safely manipulate without affecting the other one. (and if it's a list of lists, use copy.deepcopy(list) instead.)
+- WRAPAROUND HACK (not really a python-specific thing, but I thought it was cool math hack.)  You can use the modulus operator (%) to get the value on the other
+    side of an array or matrix.  Let's say you have an array of some length, say, 10.  Now let's say I want to find the values of indicies ADJACENT TO some
+    specific index.   Well, if I'm at index 3, then I can find the adjacent ones by going to indicies i+1 and i-1, right?  But what if I'm at the start or
+    end of the array?  If i = 0, what then?  I can find i + 1, but there's nothing at i - 1...  Well, we can "wrap around" to the end of the array (that is
+    to say index 9) by using  (i - 1) % length.  I don't fully understand why, but when a negative number enters the equasion, the maximum the remainder can
+    be becomes the divisor instead of the dividend.  Normally, (when working with positives), the remainder is how much of the dividend was left over when
+    as much of it was divided as possible using the divisor.  So for 15 drinks / 6 people, we think of it as 15 drinks - 6 drinks = 9,  9 - 6 = 3, and we can't subtract/reduce
+    give the remaining 3 away because everyone wouldn't get one because we don't have enough, so 3 is the remainder of 15, the dividend.  Likewise,
+    if we try doing 4 / 10, we think of that as 4 - 10,     which is impossible right off the bat, leaving a remainder of 4.
+    Again, it's the dividend.  When you throw a negative number in the mix though, things change.
+    -1 % 10 for example leaves a remainder of 9, which is much larger than the dividend, but fits within the divisor. -11 % 10 and
+    -101 % 10 also have a remainder of 9.  So while I don't quite understand why, it seems like you can essentially just take the remainder of the divisor?
+      -1 % 10 = 9
+    is functionally equivalent to...
+      I have a -1 cubic foot hole to fill.  I have buckets which cointain 10 cubic ft of cement each.  When the hole is full, how much is left in
+      the final bucket?  The answer would be 9 cubic feet. If it was -101 cubic feet, I would use 10 buckets, and 1 cubic foot from the final bucket,
+      still leaving 9.
+    all this is to say, this method works with all the other indicies, too.    i = 5? No problem.  (5 - 1) = 4  -->    4 / 10 would leave a remainder of 4.
 
 SYNTAX NOTES
 - printscreen =         print("")  single quotes also work.   integers without any quotes also work.
@@ -211,6 +233,8 @@ SYNTAX NOTES
 - random array item      (must import random library) random.choice(array_name)
 - shuffle array          (must import random library) random.shuffle(array_name) this shuffles the ORIGINAL array.  It doesn't make a copy.
 - wait()                 (must import time library)  time.sleep(time in seconds)  argument is a float that represents seconds.
+- copy()                 (must import copy library) makes a copy of a mutable data type.  The "why?" is more important than the "what" here. Info above.
+- deepcopy()             (must import copy library) same as above, but works on lists with lists in them. (i.e., goes deeper, hence the name.)
 - functions              =  use the "def" keyword, followed by the name of the function, parentheses, and a colon.     def hello():
                          To add parameters to your function, simply add one or more variable names in the parentheses, separated by commas.
                          It looks like you don't need to declare what data type your parameters can accept... HOWEVER, how those variables are used within
@@ -252,10 +276,11 @@ SYNTAX NOTES
 
 STANDARD LIBRARIES
 Name        Description
-random      contains functions related to random number generation, such as random.randint(1, 10)
+random      contains functions related to random number generation, such as random.randint(1, 10), random.choice(list)
 sys         contains functions related to the.. system? I guess? Such as sys.exit(), which will terminate the program immediately.
             (normally it terminates when it reaches the bottom.  This is useful for an infinitely looping menu that doesnt exit until the user
             selects or types "exit")
 os
 math        contains functions related to math (duh).  such as round(float) and abs(int/float) which turns values positive.
 time        contains functions for clocks and waiting, such as time.sleep(0.1)  (pause for 1/10 of a second)
+copy        contains function for copying, useful for passing mutable data types such as lists and dictionaries.  Has .copy() and .deepcopy()
