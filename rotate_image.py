@@ -1,20 +1,26 @@
 import copy
 
 grid = [['.', '.', '.', '.', '.', '.'],
-        ['.', 'O', 'O', '.', '.', '.'],
-        ['O', 'O', 'O', 'O', '.', '.'],
-        ['O', 'O', 'O', 'O', 'O', '.'],
-        ['.', 'O', 'O', 'O', 'O', 'O'],
-        ['O', 'O', 'O', 'O', 'O', '.'],
-        ['O', 'O', 'O', 'O', '.', '.'],
-        ['.', 'O', 'O', '.', '.', '.'],
+        ['.', 'X', 'O', '.', '.', '.'],
+        ['X', 'O', 'X', 'O', '.', '.'],
+        ['O', 'X', 'O', 'X', 'O', '.'],
+        ['.', 'O', 'X', 'O', 'X', 'O'],
+        ['O', 'X', 'O', 'X', 'O', '.'],
+        ['X', 'O', 'X', 'O', '.', '.'],
+        ['.', 'X', 'O', '.', '.', '.'],
         ['.', '.', '.', '.', '.', '.']]
 
 def rotate_image(matrix):
-    # copy = copy.deepcopy(matrix)
+    clone = []
     for col, char in enumerate(matrix[0]):
+        new_row = []
         for row in matrix:
-            print(row[col], end="")
-        print("")
+            new_row.insert(0, row[col])
+        clone.append(new_row)
+    return clone
 
-rotate_image(grid)
+rotaded_image = rotate_image(grid)
+for x in rotaded_image:
+    for y in x:
+        print(y, end="")
+    print("")
