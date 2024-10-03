@@ -193,9 +193,14 @@ SYNTAX NOTES
 - each_with_index   =   In Python you can do something like.....  for i in range(len(array)):    and use "i" for the index number and data.
                         Alternatively, you can use the "enumerate() function like so:
                             for index, item in enumerate(array_name):
-                              print("Index ") + str(index) + " in this list is: " + item)
+                              print("Index ") + str(index) + " in this list is: " + item
                         Note here that the words "index" and "item" have been used, but you could use any variable name.
 - tuples            =   tuples are created just like lists/arrays, but with parentheses instead of square brackets. ("hi", "hello", "sup")
+- hashes            =   in Python, hashes are called "DICTIONARIES", but function exactly the same way...
+                        myDictionary = {'key1': 'value1', 'key2': 'value2'}
+- accessing hashes  =   Again, same as Ruby.  myDictionary["someKey"]  will give you the value stored at that key, and like Ruby,
+                        the key-value pairs are unordered, so two dictionaries with the same key-value pairs are equal to each other regardless of order.
+                        You can use integers and floats as the keys for hash values.
 - string/float to int  =   int(string/float)        (in Ruby it's     .to_i)   NOTE: making a float an int will always round it down.
 - int/float to string  =   str(int/float)               (in Ruby it's     .to_s)
 - string/int to float  =   float(int/string)           (in Ruby it's    .to_f)   NOTE:  making an int a float will add a .0 at the end.
@@ -272,7 +277,7 @@ SYNTAX NOTES
                                  print("Error: Invalid argument.")
                          Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
                          Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
-                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError, AttributeError
+                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError, AttributeError, KeyError
 
 STANDARD LIBRARIES
 Name        Description
