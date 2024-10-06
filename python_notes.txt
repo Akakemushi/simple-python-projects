@@ -128,6 +128,18 @@ For anyone reading this, these are just my personal notes as I get to know the P
     all this is to say, this method works with all the other indicies, too.    i = 5? No problem.  (5 - 1) = 4  -->    4 / 10 would leave a remainder of 4.
 
 SYNTAX NOTES
+- string functions      Assignment is just like Ruby, use single or double quotes, with double quotes for using single quotes inside.  The escape character
+                        is the backslash character \.  use these
+                            \' single quotes
+                            \" double quotes
+                            \t  tab
+                            \n  newline
+                            \\  backslash
+                        You can convert a string to a "raw string" by puting an r before the initial quote.  Doing so will ignore all escape characters
+                          and print exactly what you see. These are helpful if you want to type something that has a lot of backslashes such as a filepath
+                          or perhaps url.
+                        Multiline strings can be started with triple quotes '''   ''' .  If you do this, you dont need to manually enter \n characters.
+                          Multiline strings also accept both single and double quotes by default.
 - printscreen =         print("")  single quotes also work.   integers without any quotes also work.
                         You can pass multiple strings to print(), separated by commas, and they will be printed, separated by a space.
                         You can override the default spaces and new line characters that the print() function adds by using the Keyword Arguments "sep" and "end"
@@ -207,6 +219,8 @@ SYNTAX NOTES
                         but something more like it, and you can ITERATE over it like an array, which is what they are usually used for.
                         If you want to turn these 3 data types into an array, you can:  just do  list(name_of_dict_type), as you would for a tuple.
                         It should also be noted that the dict_items  type contains a sequence of tuples.
+                        IMPORTANT NOTE* If you iterate over a hash that has two or more keys named the same, only the LAST one will be counted, and only
+                        the LAST value will be assigned to that key.  So, myHash = {"name": "Bob", "name": "Jim"} will be length 1, and name = Jim.
 - check for keys/values  =   In ruby, this would be   hash.has_key?(search_term), but in Python, this would be search_term in dictionary.keys()  ,
                         making use of the "in" or "not in" keywords.  There is also a shortcut for this, if you just omit the final   .keys() it does the same.
                         You can likewise use .values() to search for a value instead.  (There is no shortcut for values.)
