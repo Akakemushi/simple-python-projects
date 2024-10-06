@@ -126,20 +126,42 @@ For anyone reading this, these are just my personal notes as I get to know the P
       the final bucket?  The answer would be 9 cubic feet. If it was -101 cubic feet, I would use 10 buckets, and 1 cubic foot from the final bucket,
       still leaving 9.
     all this is to say, this method works with all the other indicies, too.    i = 5? No problem.  (5 - 1) = 4  -->    4 / 10 would leave a remainder of 4.
+- Chaining method calls.   You can chain method calls in Python just like in Ruby.  Something like myString.upper().lower() is valid.
 
 SYNTAX NOTES
-- string functions      Assignment is just like Ruby, use single or double quotes, with double quotes for using single quotes inside.  The escape character
-                        is the backslash character \.  use these
+- Strings               Assignment is just like Ruby, use single or double quotes, with double quotes for using single quotes inside.
+                        Escape character--   is the backslash character \.  use these
                             \' single quotes
                             \" double quotes
                             \t  tab
                             \n  newline
                             \\  backslash
-                        You can convert a string to a "raw string" by puting an r before the initial quote.  Doing so will ignore all escape characters
+                        Raw String-- You can convert a string to a "raw string" by puting an r before the initial quote.  Doing so will ignore all escape characters
                           and print exactly what you see. These are helpful if you want to type something that has a lot of backslashes such as a filepath
                           or perhaps url.
-                        Multiline strings can be started with triple quotes '''   ''' .  If you do this, you dont need to manually enter \n characters.
-                          Multiline strings also accept both single and double quotes by default.
+                        Multiline strings-- can be started with triple single quotes '''   ''' .  If you do this, you dont need to manually enter \n characters.
+                          Multiline strings also accept both single and double quotes by default.  (Note that multiline comments follow a similar formula
+                          using three double quotes """   """).
+                        String slices-- can be taken just like arrays (below)  myString[3:7] myString[4:]   myString[:9]  etc.
+                        String search-- can be done using   search_term in myString  or  search_term not in myString, just like arrays.
+                        String interpolation--  There are TWO WAYS to do it in Python now, as of 3.6.  The first is the old way, which looks like this..
+                          "This is the old style previous to %s %s." % ("coding_language", version_number)
+                            In this version the %s converts whatever data type is sent to it into a string automatically, so you dont need to call str().
+                          f"This is the new style of interpolation as of {coding_language} {verson_number}"
+                            This is an f-string, and like raw-strings, you MUST HAVE the letter "f" written just before the initial quote mark.
+                            as with #{variable} in Ruby, you can do operations and stuff within the {}.  Also, anything within the {} is converted to str.
+                        String case--  myString.upper() and myString.lower() convert ALL the characters in the string to upper or lower. These methods do not
+                          modify the original string: they return a new one, so you need to store it or set the original equal to the new one.
+                          Two other relevant methods are   .islower() and .isupper()  which return T/F if the string is ALL upper or ALL lower.
+                          Note, however that there MUST be at least one alphabet character within the string for this to return True. "12345".islower() will be False.
+                        isX() methods-- These are various Boolean tests that look at the string and tell you if it matches a particular format.
+                            isalpha()   Returns True if the string consists only of letters and isn't blank.
+                            isalnum()   Returns True if the string consists only of letters and numbers and is not blank.
+                            isdecimal() Returns True if the string consists only of numeric characters and is not blank.
+                                        total misnomer here... only returns true if it's a positive whole number or 0.  "3.14" would be False.
+                            isspace()   Returns True if the string consists only of spaces, tabs, and newlines and is not blank.
+                            istitle()   Returns True if the string consists only of words that begin with an uppercase letter followed by only lowercase letters.
+                                        note that this is sort of a misnomer.  Titles don't capitalize prepositions, but this method thinks they should be.
 - printscreen =         print("")  single quotes also work.   integers without any quotes also work.
                         You can pass multiple strings to print(), separated by commas, and they will be printed, separated by a space.
                         You can override the default spaces and new line characters that the print() function adds by using the Keyword Arguments "sep" and "end"
