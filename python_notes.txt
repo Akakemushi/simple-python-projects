@@ -2,7 +2,7 @@ For anyone reading this, these are just my personal notes as I get to know the P
 
 - pip is the package installer for Python. pip allows you to install additional Python libraries and packages from the Python Package Index (PyPI).
   It's useful for managing dependencies in Python projects. With pip, you can install packages like NumPy, Django, Flask, etc., by running commands
-  such as       pip install package_name.
+  such as       pip install package_name or  pip install --user package_name
 - to run python programs, do   python3   followed by the filename in the command line
 - REPL  stands for  Read  Evaluate  Print  Loop,  and it's a way to execute python code typed into the console and get immediate results.
 - To initiate REPL,   simply type   "python3"  with nothing after it in the console.  To exit,  either do ctrl + D  or type "exit()"
