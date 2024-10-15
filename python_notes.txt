@@ -162,6 +162,45 @@ SYNTAX NOTES
                             isspace()   Returns True if the string consists only of spaces, tabs, and newlines and is not blank.
                             istitle()   Returns True if the string consists only of words that begin with an uppercase letter followed by only lowercase letters.
                                         note that this is sort of a misnomer.  Titles don't capitalize prepositions, but this method thinks they should be.
+                        startswith()    takes a string as an argument and returns true or false depending on if the beginning of the string matches the argument.
+                        endswith()      same, but matches the end of the string.   These two are useful alternatives to the == operator if you dont need to compare
+                                        the entire string.
+                        join()      !!! Ruby is different !!! If you have a list (array) of strings that need to be joined together.
+                                    In Ruby, this is an array method...   myArray.join(" "), but in Python, this is a STRING method, so the syntax is reversed...
+                                    " ".join(myArray)   This would be easy to overlook, so WATCH OUT
+                        split()     This is the same as Ruby.  myString.split("some_delimiter") will output a list/array.  If left blank, the default is whitespace.
+                                    You can use it to split text by newline characters.
+                        partition()     This is new to me.  It takes a string argument to be used like a delimiter, but what it returns is not like .split.
+                                        It returns a TUPLE with 3 parts, the first is the "before the partition", the second is the partition itself, and the
+                                        third is "after the partition".  It will never return more than 3 parts, even if more than one instance of the partition
+                                        is found in the string.  It will use the first one and ignore the rest.  It's a little weird, so as an example,
+                                        "I am the king of France".partition("the") would return a tuple containing (("I am ", "the", "king of France"))
+                                        Also, if the partition string does not occur in the string, then the first part of the tuple will be the whole string,
+                                        and the other two will be blank.  I can't think of a reason to use this, but if you need to keep the partition itself
+                                        for some reason, I guess this could be useful?
+                                        You can use the multiple assignment trick to catch all three parts into variables like so...
+                                        before, partition, after = "This is a test".partition("is")
+                        justify methods ---   There are 3 methods that can be used to justify the console output of Python.
+                            rjust()     Justify right.  Takes an integer argument that represents the TOTAL WIDTH of the output in the console,
+                                        then adds spaces to the left of the string its called on until that total width is reached.  So, if you did, say...
+                                        "Hello".rjust(20),    you would get and output of "               Hello", that is, 15 spaces + 5 characters to make 20.
+                            ljust()     Justify left.  Same as above, but left.  Duh.
+                            center()    Justify center.  You guessed it.
+                            Note that you technically CAN put a value that is less than the string length, but no spaces will be added, so it's pointless.
+                            Note also that you can add a second argument to change the default (spaces) to some other string or character. center(20, "*") for example.
+                        strip methods  --- Used when you want to remove the whitespace from a string (space, tab, newline).
+                            strip()     This exists in Ruby, too.  It just returns a string that has all the leading and trailing whitespace removed.
+                            rstrip()    Removes whitespace on the right side.
+                            lstrip()    Removes whitespace on the left side.
+                            Optionally, you can add a string argument into any of these methods.  By doing so, you'll strip away ANY CONSECUTIVE OCCURANCES of ANY
+                            of those characters, regardless of order.  Eg., strip("dog") would strip away any lowercase "d", "o", or "g", it found as follows...
+                            "odododgggCATgodgod".strip("dog")   outputs  -->    "CAT"    and
+                            "ododRodgggCATgodgod".strip("dog")   outputs  -->   RodgggCAT  because that capital R breaks the consecutive string.
+                        Unicode stuff  ---  when you need to get the unicode value of a character, or convert a unicode value into a character.
+                            ord()       Takes a single-character string as an argument, and outputs the unicode point value of that character.
+                                        Note that this is NOT a string method, it is a built-in Python function.
+                            chr()       Opposite effect--  takes an integer representing the unicode value of some character, and outputs that character.
+                            You might use these when you need to do math on letters... or order them... or something.... I dunno.
 - printscreen =         print("")  single quotes also work.   integers without any quotes also work.
                         You can pass multiple strings to print(), separated by commas, and they will be printed, separated by a space.
                         You can override the default spaces and new line characters that the print() function adds by using the Keyword Arguments "sep" and "end"
@@ -299,6 +338,7 @@ SYNTAX NOTES
 - wait()                 (must import time library)  time.sleep(time in seconds)  argument is a float that represents seconds.
 - copy()                 (must import copy library) makes a copy of a mutable data type.  The "why?" is more important than the "what" here. Info above.
 - deepcopy()             (must import copy library) same as above, but works on lists with lists in them. (i.e., goes deeper, hence the name.)
+- copy()                 (must import pyperclip library)  NOT THE SAME AS ABOVE!!!  This one accesses the computers clipboard.
 - functions              =  use the "def" keyword, followed by the name of the function, parentheses, and a colon.     def hello():
                          To add parameters to your function, simply add one or more variable names in the parentheses, separated by commas.
                          It looks like you don't need to declare what data type your parameters can accept... HOWEVER, how those variables are used within
@@ -349,3 +389,5 @@ math        contains functions related to math (duh).  such as round(float) and 
 time        contains functions for clocks and waiting, such as time.sleep(0.1)  (pause for 1/10 of a second)
 copy        contains function for copying, useful for passing mutable data types such as lists and dictionaries.  Has .copy() and .deepcopy()
 pprint      contains pprint and pformat, which help make output more readable (like printing hash data on separate lines, for example)
+pyperclip   (3rd party, must download) contains functions for accessing your computers clipboard, which is handy!!
+            namely,  pyperclip.copy() and pyperclip.paste()
