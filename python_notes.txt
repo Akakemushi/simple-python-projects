@@ -201,6 +201,7 @@ SYNTAX NOTES
                                         Note that this is NOT a string method, it is a built-in Python function.
                             chr()       Opposite effect--  takes an integer representing the unicode value of some character, and outputs that character.
                             You might use these when you need to do math on letters... or order them... or something.... I dunno.
+- Regex stuff           
 - printscreen =         print("")  single quotes also work.   integers without any quotes also work.
                         You can pass multiple strings to print(), separated by commas, and they will be printed, separated by a space.
                         You can override the default spaces and new line characters that the print() function adds by using the Keyword Arguments "sep" and "end"
