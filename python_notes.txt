@@ -201,7 +201,68 @@ SYNTAX NOTES
                                         Note that this is NOT a string method, it is a built-in Python function.
                             chr()       Opposite effect--  takes an integer representing the unicode value of some character, and outputs that character.
                             You might use these when you need to do math on letters... or order them... or something.... I dunno.
-- Regex stuff           
+- Regex stuff           all regex patterns and functions are included in the "re" library, so you need to import that.
+                        there is a free online regex tester for python at  https://pythex.org
+              .compile  to make a regex object, call re.compile() on a string representing the regex.  You can catch the returned object in a variable
+                            phoneNumRegex = re.compile(r'\d\d\d-\d\d\d-\d\d\d\d')   the "r" at the front means "raw string", and is used to ignore the escape characters.
+                            there is an optional second argument you can pass to .compile after the regex...
+                                add re.DOTALL (without quotes) to make the dot character also include newlines in its matches.
+                                add re.I or re.IGNORECASE to make the search case insensitive.
+                                add re.VERBOSE to make the regex ignore whitespace and comments inside the expression, which frees you up to spread a particularly long
+                                  and complicated regex over multiple lines and comment on what each part of the regex does. USE TRIPLE QUOTES FOR THIS ''' '''
+                                if for some reason you wanted to use 2 or even all 3 of these options, you can, but since the .compile method only accepts 2 arguments,
+                                  you have to "trick the system" a bit, by separating the options with a pipe..   re.compile("string", re.I | re.DOTALL | re.VERBOSE)
+              .search   to use a regex, call myRegexObject.search('This is a string you want to search through.").  You can catch the retuned "match object".
+                        NOTE: the .search method only returns the FIRST match found, and ignores any other matches.
+                            mo = phoneNumRegex.search('My number is 415-555-4242.')   (mo is shorthand for "match object")
+              .findall  this is like search, but returns EITHER: a list of matches as STRINGS, OR: a list of TUPLES of strings if there are groups used in the regex pattern
+              .sub      this is a substitution method for a regex object.  It takes two arguments, the first is the string you want to INSERT INSTEAD,
+                        and the second is the string that you are going to run the find and replace on.  The search term itself is already in the regex object.
+                        If you want to include the "found match" in the replacement, you can do that by putting the part of the match you want to include in a group.
+                        Once you do, you can then refer to that bit of the match using \1, \2, \3, etc within the replacement string. It's a tad hard, so here's an example
+                              agentNamesRegex = re.compile(r'Agent (\w)\w*')    <--- the regex looks for stuff like "Agent Jane"  'Agent Thomas", etc... and "captures"
+                              the first letter of the name in the inner parentheses you see above (\w).  This letter can now be refered to by using \1
+                              agentNamesRegex.sub(r'\1****', 'Agent Alice told Agent Carol that Agent Eve Knew Agent Bob was a double agent.')
+                              this will output the first letter, followed by 4 asterix in any place where "Agent Something" occurs.
+                              A**** told C**** that E**** knew B**** was a doulbe agent.
+              .group    to view the contents of a match object, call myMatchObject.group() to get a string containing just the match. (Without using .group(),
+                            what you will get is the match plus some other data about that match, like where it was found.)  if you have created multiple
+                            groups with additional ( ) in your regex, you can use the plural form .groups() to see them all in a tuple.
+                        - \ the escape character, needed if you want to match any of the following   .  ^  $  *  +  ?  {}  []  \  |  ()
+                            I think this is kinda weird, since we're using r'regexhere' to get a raw string... so I thought that all the \ characters
+                            would be ignored... My best guess as to why this works is because of the .compile method you have to use.  Maybe we need
+                            to send a raw string to the compile method, and the compile method has its own way of escaping things??  I dunno.
+                        - ( )  creates a group for using the .group method later on.  eg.  (r'(\d\d\d)-(\d\d\d-\d\d\d\d)')
+                            with this pattern, you could later do mo.group(1) to get just the area code, or mo.group(2) to get just the local number.
+                        - \d   matches a single digit, 0-9
+                        - \D   matches any character that is NOT a numeric digit 0-9
+                        - \w   matches any letter, numeric digit, or the underscore character, so a-zA-Z0-9_
+                        - \W   matches any character that is NOT the above /w
+                        - \s   matches any space, tab, or newline character (so whitespace)
+                        - \S   matches any NON-whitespace character.  this is kinda like \w, but it would also include special characters like $#& etc.
+                        - {3}  matches the pattern (or character) preceeding it exactly x number of times.  \d{3} is equivalent to \d\d\d
+                              you can also specify a minimum, maximum or both number of times by including a comma.  {3,5}, {,5}, {3,}
+                        - |    The pipe is basically like "or".  It will return the FIRST match it finds from either side of the pipe. Can be used in a group, too.
+                              (r'Batman|Tina Fey')       (r'Bat(man|mobile|copter|bat)')  <-- would match Batman, Batmobile, Batcopter, and Batbat.
+                        - ?    Question marks mean that the preceeding group/character is optional (0 or 1 instances).  (r'Bat(wo)?man') matches both Batman and Batwoman
+                               HOWEVER!!  There is a SECOND use for question marks; when they follow a range, like {3,5}?  By using a ? after a range, it tells the regex
+                               to be LAZY and not GREEDY.  (Greedy is the default behavior).  It will then match the shortest possible string.
+                        - *    The asterix means "match 0 or more" (r'Bat(wo)*man')  could match  Batwowowowowoman
+                        - +    The plus means "match 1 or more"  (r'Bat(wo)+man')  would match Batwowowowowoman, but NOT match Batman.
+                        - []   square brackets are for character classes. [a-zA-Z]  or [0-5] for example.  They are customizable versions of stuff like \d or \w
+                               Note that inside the char class, the normal regex symbols don't function as such, and you do not need to escape them, like \$
+                               The exception being the hyphen, which works to set a range. If you want to SEARCH for a hyphen in a char class, put it as the first
+                               character (maybe last as well?) in the class, so that it isn't between two other characters.
+                        - ^    Carrats have TWO uses
+                               1). a character class starting with a carrat is a NEGATIVE class, so it matches any character NOT in the class,
+                               just like the capital classes \D \W and \S
+                               2). a regex that starts with a carrat means that the regex must be at the START of the string for it to count.
+                        - $    dollar signs work like the second use of carrats (above), except that the regex must be at the END of the string to count.
+                               That means that if you use both a carrat and a dollar sign, the whole string must match the regex, and have nothing else.
+                        - .    period is the wildcard.  Matches everything except for newline.
+                               use  .* for a greedy match all, and .*? for a lazy match all.  Here's the difference... "<I love melons> in bed>"
+                                    (r'<.*?>') would find  "<I love melons>" and then give up.
+                                    (r'<.*>')  would look through everything, and find '<I love melons> in bed>' as the longest match
 - printscreen =         print("")  single quotes also work.   integers without any quotes also work.
                         You can pass multiple strings to print(), separated by commas, and they will be printed, separated by a space.
                         You can override the default spaces and new line characters that the print() function adds by using the Keyword Arguments "sep" and "end"
@@ -386,6 +447,7 @@ sys         contains functions related to the.. system? I guess? Such as sys.exi
             (normally it terminates when it reaches the bottom.  This is useful for an infinitely looping menu that doesnt exit until the user
             selects or types "exit")
 os
+re          contains functions related to regex
 math        contains functions related to math (duh).  such as round(float) and abs(int/float) which turns values positive.
 time        contains functions for clocks and waiting, such as time.sleep(0.1)  (pause for 1/10 of a second)
 copy        contains function for copying, useful for passing mutable data types such as lists and dictionaries.  Has .copy() and .deepcopy()
