@@ -1,13 +1,17 @@
-spam = ["apples", "bananas", "tofu", "cats"]
-length = len(spam)
-final_index = length - 1
-if length > 0:
-    for index, item in enumerate(spam):
-        if index == final_index:
-            print(item)
-        elif index == final_index - 1:
-            print(item + " and ", end="")
-        else:
-            print(item + ", ", end="")
-else:
-    print("This list is empty.")
+import pyinputplus as pyip
+
+num1 = pyip.inputNum("Gimme: ")
+print(num1)
+
+num2 = pyip.inputNum(prompt="Sup: ")
+print(num2)
+
+str1 = pyip.inputStr("Hi: ")
+print(str1)
+
+float1 = pyip.inputFloat("Point something: ")
+print(float1)
+
+print(type(num1))
+type(num2)
+

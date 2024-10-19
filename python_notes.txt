@@ -439,8 +439,46 @@ SYNTAX NOTES
                          Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
                          Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
                          ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError, AttributeError, KeyError
-
-STANDARD LIBRARIES
+- PyInputPlus methods =   (requires pyinputplus library) these are for data validation.  They can all be given the following optional keyword arguments:
+                              blank=True   this option will allow inputs to be blank.  The default is that an answer is required.
+                              limit=5   this option limits the number of tries the user has to enter a valid input.
+                              timeout=60   this option limits the amount of time (in seconds) that the user has to enter a valid input.
+                              default='some default'  If this option is included along with limit or timeout, then the default value will be returned
+                                  instead of throwing an error.  (it seems that your default value does NOT need to match the input data type.)
+                              allowRegexes=[r'yourRegexGoesHere', r'anotherRegexGoesHere', r'etc']   This option will only allow inputs if they match
+                                  one of the given regexes in the list. (You must give this method a LIST of regexes, even if it's only one.)
+                              blockRegexes=[r'yourRegexGoesHere', r'anotherRegexGoesHere', r'etc']   Reverse of the above.
+                                  If you use BOTH allowRegexes AND blockRegexes, the allowRegexes result will override the blocking one.
+                          inputStr() it's like the built-in input() function but has the general PyInputPlus features. You can also pass a custom validation
+                              function to it.
+                          inputInt() Ensures the user enters an integer (not a float). Returns an int.
+                          inputFloat() Ensures the user enters a float (not an int). Returns a float.  (technically you can enter ints without a decimal
+                              and it will just add a .0  on the end for you.)
+                          inputNum() Ensures the user enters a number.  Returns an int or float depending on input.
+                              The above 3 number-related methods have additional options that can be added as a second argument...
+                                  - min=4   set the minimum requirement for the input. inclusive.
+                                  - max=4   set the maximum limit for the input. inclusive.
+                                  - greaterThan=4  same as min, but exclusive.
+                                  - lessThan=4  same as max, but exclusive.
+                          inputChoice()  Ensures the user enters one of the provided choices.
+                          inputMenu() Is similar to input Choice(), but privides a menu with numbered or lettered options.
+                          inputDatetime() Ensures the user enters a date and time.
+                          inputYesNo() Ensures the user enters a 'yes' or 'no' response
+                              additional options for this input are yesVal="はい"  and noVal="いいえ" so you can change languages if needed.
+                          inputBool()  Is similar to above, but takes a 'True' or 'False' response and returns a boolean value.
+                          inputEmail() Ensures the user enters a valid email address.
+                          inputFilepath() Ensures the user enters a valid file path and filename, and can optionally check that a file with
+                              that name exists.
+                          inputPassword()  Is like the built-in input(), but displays * characters as the user types so that passwords, or other
+                              sensitive information aren't displayed on the screen.
+                          inputCustom()  allows you to pass in your own function to be used as a part of validation. You would do this by writing
+                              the code for your custom function elsewhere, and then passing the name of that function into inputCustom.
+                              REMEMBER!  When passing a function ITSELF, you don't use () after it because you are not calling it.
+                              The reason you would use inputCustom() at all instead of just using the custom function itself, is that you can easily
+                              combine your custom function with the built-in options listed at the top, such as blank, limit, default, etc...
+- help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
+                          imported function like so...     help(pyip.inputChoice)
+STANDARD LIBRARIES    (Remember, you can use import library_name as shorthand_name to make calling the functions within easier)
 Name        Description
 random      contains functions related to random number generation, such as random.randint(1, 10), random.choice(list)
 sys         contains functions related to the.. system? I guess? Such as sys.exit(), which will terminate the program immediately.
@@ -454,3 +492,4 @@ copy        contains function for copying, useful for passing mutable data types
 pprint      contains pprint and pformat, which help make output more readable (like printing hash data on separate lines, for example)
 pyperclip   (3rd party, must download) contains functions for accessing your computers clipboard, which is handy!!
             namely,  pyperclip.copy() and pyperclip.paste()
+pyinputplus (3rd party, must download) contains various data validation shortcuts so you don't have to write them yourself.
