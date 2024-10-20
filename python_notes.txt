@@ -439,7 +439,8 @@ SYNTAX NOTES
                          Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
                          Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
                          ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError, AttributeError, KeyError
-- PyInputPlus methods =   (requires pyinputplus library) these are for data validation.  They can all be given the following optional keyword arguments:
+- PyInputPlus methods =   (requires pyinputplus library) these are for data validation. Using these functions automatically strips away leading and
+                          trailing whitespace.  They can all be given the following optional keyword arguments:
                               blank=True   this option will allow inputs to be blank.  The default is that an answer is required.
                               limit=5   this option limits the number of tries the user has to enter a valid input.
                               timeout=60   this option limits the amount of time (in seconds) that the user has to enter a valid input.
