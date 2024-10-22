@@ -1,5 +1,8 @@
 For anyone reading this, these are just my personal notes as I get to know the Python language and how it is similar/different from Ruby/Javascript.
 
+- Quick note about linux that I didn't know, folders and filenames are case sensitive in Linux.
+- Another OS note, Windows uses backslashes to separate folders in a filepath, while Mac and Linux use forward slashes /.   huh. If you want your
+  program to work on all systems, you'll have to handle both cases.
 - pip is the package installer for Python. pip allows you to install additional Python libraries and packages from the Python Package Index (PyPI).
   It's useful for managing dependencies in Python projects. With pip, you can install packages like NumPy, Django, Flask, etc., by running commands
   such as       pip install package_name or  pip install --user package_name
@@ -477,15 +480,118 @@ SYNTAX NOTES
                               REMEMBER!  When passing a function ITSELF, you don't use () after it because you are not calling it.
                               The reason you would use inputCustom() at all instead of just using the custom function itself, is that you can easily
                               combine your custom function with the built-in options listed at the top, such as blank, limit, default, etc...
+- working with files  =   Path() First of all, it helps to import the Path() function by adding  "from pathlib import Path" at the top.  This function is a
+                              filepath helper that can put together a correctly formatted filepath, given some arguments, and (I think) it works for any
+                              OS system (Win, Mac, Lin). USE THIS.  If you don't you'll have to manually put together the various filepath styles for different
+                              OS, which would be a real pain.  This function returns a "path object" apparently, which as far as I can tell, is like a string.
+                          / When you want to concatenate strings, you use +, but for Path objects, you use /  .    Then you can do stuff like....
+                                  Path('spam') / 'bacon' / 'eggs'
+                                  Path('spam') / Path('bacon/eggs')
+                                  Path('spam') / Path('bacon', 'eggs')
+                              All 3 of these would evaluate to the same thing:  'spam/bacon/eggs'   The only thing to remember when using / like this is
+                              that one of the first two values must be a Path object, otherwise you'll get an error.
+                          CWD (Current Working Directory) any filenames or filepaths used in your code are assumed to be in the CWD if they do not include
+                              the root directory.
+                          Path.cwd() will return the current working directory. Remember, in Linux, you won't see C: or D:, you'll just see a /.  The letters
+                              are strictly a Windows thing, and this (Ubuntu) is running on Linux/Posix
+                          Path.home()   All users on the computer have a home folder for storing their files, and you can see it with this method.
+                              On Windows, home directories are under C:\users
+                              On Mac, home directories are under /Users
+                              On Linux, home directories are often under /home   <--- this checks out, that's what I see on Ubuntu.
+                          Absolute vs. Relative Paths.    An absolute path always begins with the root folder.  A relative path starts from the cwd.
+                          Path(some_path).is_absolute()  returns True or False depending on the format of the path.
+                          If you want to turn a relative path into an absolute path, just the Path.cwd() method and the / concatenator like so...
+                              Path.cwd() / Path('my/relative/path')
+                          .  and   ..   folders.  These are special names for folders.  A single dot means "this folder", double-dots means "parent folder".
+                              The single dot version is optional; if you just start with the folder and/or filename, it does the same thing.
+                          os.makedirs()  and  os.chdir() are for making and changing directories, respectively. (Just an FYI for a shortcut, you can
+                              just write out a long filepath that doesn't exist yet when using os.makedirs, and all the necessary intermediate folders
+                              that would be needed to get to the final file/folder are also created along the way.)
+                          Path(some_path).mkdir() will turn a path object into a directory.  NOTE THAT THIS IS NOT THE SAME AS os.makedirs() !!!
+                          os.path.abspath(path) will return a string of the absolute path of the argument. It's an easy way to make a relative an absolute.
+                          os.path.isabs(path) will return True if the arg is an absolute path.
+                          os.path.relpath(path, start) will return a string of a relative path from the start path to path.  If start is not provided, cwd is used instead
+                          Getting PARTS of a filepath:  The parts of a file path include the following,
+                              The 'anchor', which is the root folder (basically just a slash  /) (Windows systems have a 'drive' letter before the anchor slash)
+                              The 'parent', which is the folder that contains the file
+                              The 'name' of the file, which is made up of the...
+                                  'stem' (what you named it) and the
+                                  'suffix  (the .txt .mp3 etc part.)
+                              Once you have stored a Path object in a variable, you can get these parts easily...  p = Path('C:/Users/JD/spam.txt')
+                                  p.anchor      gives    C:\\
+                                  p.parent      gives    C:/Users/Al  <--- a Path object is returned, not a string.  The others all return strings.
+                                  p.parents[0]  gives    a Path object corresponding to the full path given.  for each index you go up, the path
+                                                         goes up the chain one folder.  parents[1] is one folder up from parents[0], and so on.
+                                  p.name        gives    spam.txt
+                                  p.stem        gives    spam
+                                  p.suffix      gives    .txt
+                                  p.drive       gives    C:
+                          Find File Size:   os.path.getsize(path) will return the size in bytes of the file in the argument.
+                          Find File Names:  os.listdir(path) will return a list/array of filename strings for each file in the path argument ()
+                          Glob Patterns:  WTF is this? Huh. Path objects have a .glob() method which is used to list the contents of a folder according to A
+                              "glob pattern"....  riiiight.  Glob patterns like a simplified form of regex that are often used in command line commands.
+                              This method returns a "generator object" (seriously, wtf?) that you have to pass to list() to easily view in iPython3.
+                              Let's look at some examples to wrap our noggin' around this...
+                                  p = Path('/home/akakemushi/desktop')   <-- or some path like that...
+                                  p.glob('*')   -->  will return something like: <generator object Path.glob at hexidecimal_number_here>
+                                  list(p.glob('*'))   -->  will make a list from the generator.
+                                  [PosixPath(blablabla.png), PosixPath(blablabla.pdf), PosixPath(blablabla.jpg) etc etc...]
+                              In the above, the asterix * stands for "multiple of any characters", so it returns all files in the path. However, you can
+                              create complex glob patters just as you can with regex, such as
+                                  list(p.glob('*.txt'))    <--- this will only return the .txt files in that path.
+                              The question mark (?) stands for any SINGLE character.
+                                  list(p.glob('project?.docx'))    <---- would pick up files like  "project3.docx", "projectA.docx" etc..
+                              You can combine * and ? anyway you like, such as....
+                                  list(p.glob('*.?x?'))  <--- would pick up .exe files as well as .txt files.
+                          Path Validity:  use p.exists() to see if a path exists (True) or not (False)
+                              use p.is_file() to see if something exists AND if it's a file or not. (False if not, or doesn't exist)
+                              use p.is_dir() to do the opposite of the above.
+                              You can check to see if a flash drive is plugged in with these:  dDrive = Path('D:/')  ->  dDrive.exists() -> False
+                              (not sure what the Linux equivalent is.)
+                          Read / Write:   We're mostly working with plaintext files in this book.  ALL OTHER FILES are known as BINARY files, which
+                              a text editor cannot display as intelligible text.
+                              plaintext files are basically just long strings.  That's all they are.  You can read from them with p.read_text(), and
+                              write to them using p.write_text('string').   .write_text will create a new file, or overwrite an existing one.
+                                  from pathlib import Path
+                                  p = Path('spam.txt')
+                                  p.write_text('Hello, world!')
+                                  13   <--- this output is just the length of the string you wrote.
+                                  p.read_text()
+                                  'Hello, world!'
+                              Note that these two methods are limited.  Usually you need to call open(Path object or string here) first to get back a
+                              File object. The path passed to open() can be absolute OR relative. Then you call read() or write() on the File object,
+                              (Note that these are NOT read_text/write_text, as above.)  and finally call close(File object) on the object.
+                              Opening files in this way only opens them in "read mode" by default, so you CANNOT modify them.  To do that, you need
+                              to pass a second argument to the open() function, a "w" for "(over)write mode", or an "a" for "append mode".  (You can technically
+                              also pass "r" for read mode, but that's not really neccessary since it's the default.)  Note that the write() method
+                              does NOT automatically add a new line at the end like print() does. You have to do that manually.
+                              Here's an example of how you'd get the text out of a file:
+                                  helloFile = open('blablablafilepath.txt', 'w')
+                                  content = helloFile.read()   -->  now "content" contains the string that was read from the helloFile
+                              Similar to the limited functions described earlier, trying to write or append to a file that doesn't exist will create a new file.
+                              You can also read a plaintext file line by line, storing the strings as items in a list. the \n character is the delimiter.
+                          Shelf Files:    These are files used for storing other kinds of variable values that are not strings/plaintext
+                              To use these, first import the library "shelve".  Then call shelve.open() and pass it a filename, storing the returned
+                              shelf value in a variable. You can make changes to the shelf value as if it were a dictionary.  When you're done, call close()
+                              on the shelf value. So a shelf file, is basically a hash/dictionary, and as you know, the keys in a dictionary can hold any kinda
+                              of data type that you need.  Here's an example:
+                                  import shelve
+                                  shelfFile = shelve.open('mydata')  <-- IMPORTANT DISTINCTION: while the open() function can take a Path object or a string, the shelve.open() method ONLY takes strings.
+                                  cats = ['Mr. Bigglesworth', 'Mr. Munch', 'Felix']
+                                  shelfFile['cats'] = cats    <--- creating a new key in the shelfFile called cats, and setting the value to the cats list.
+                                  shelfFile.close()
+                              Shelve files are always in "write mode".  There are no options to change it.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
+
 STANDARD LIBRARIES    (Remember, you can use import library_name as shorthand_name to make calling the functions within easier)
 Name        Description
 random      contains functions related to random number generation, such as random.randint(1, 10), random.choice(list)
 sys         contains functions related to the.. system? I guess? Such as sys.exit(), which will terminate the program immediately.
             (normally it terminates when it reaches the bottom.  This is useful for an infinitely looping menu that doesnt exit until the user
             selects or types "exit")
-os
+os          contains stuff like os.chdir for changing the current working directory, os.mkdirs for creating directories, and os.listdir()
+            also contains os.path library, which has additional methods like os.path.abspath(), os.path.isabs(), os.path.getsize()
 re          contains functions related to regex
 math        contains functions related to math (duh).  such as round(float) and abs(int/float) which turns values positive.
 time        contains functions for clocks and waiting, such as time.sleep(0.1)  (pause for 1/10 of a second)
@@ -494,3 +600,6 @@ pprint      contains pprint and pformat, which help make output more readable (l
 pyperclip   (3rd party, must download) contains functions for accessing your computers clipboard, which is handy!!
             namely,  pyperclip.copy() and pyperclip.paste()
 pyinputplus (3rd party, must download) contains various data validation shortcuts so you don't have to write them yourself.
+pathlib     has stuff related to filepaths, however in the book example, you don't import the whole thing.  You use the following line:
+            from pathlib import Path      <---  this shortens what we need to type later.  We can just type "Path" instead of "pathlib.Path"
+shelve      contains functions related to saving and opening files that are not just plaintext. If you want to "shelve" some variables for later.
