@@ -582,6 +582,16 @@ SYNTAX NOTES
                                   shelfFile['cats'] = cats    <--- creating a new key in the shelfFile called cats, and setting the value to the cats list.
                                   shelfFile.close()
                               Shelve files are always in "write mode".  There are no options to change it.
+                          SHUTIL module:   This module has functions for copying, moving, renaming and deleting files.
+                              shutil.copy(source, destination)   does what it sounds like.Both source and dest can be strings or path objects.
+                                  if destination is a filename, it will be used as the new name of the copied file.  This function returns
+                                  a string or Path object of the copied file.
+                              shutil.copytree() will copy an entire folder and every folder and file in it.
+                              shutil.copytree(source, destination) will copy the folder at the path (source), along with all its fules and subfolders,
+                                  to the (destination).  In this case, both the source and destination args are strings.  This function returns
+                                  a string of the path of the copied folder.
+                              shutil.move(source, destination) will move the file or folder at "source" to the "destination".  It returns
+                                  a string of the absolute path of the new location.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
@@ -604,3 +614,4 @@ pyinputplus (3rd party, must download) contains various data validation shortcut
 pathlib     has stuff related to filepaths, however in the book example, you don't import the whole thing.  You use the following line:
             from pathlib import Path      <---  this shortens what we need to type later.  We can just type "Path" instead of "pathlib.Path"
 shelve      contains functions related to saving and opening files that are not just plaintext. If you want to "shelve" some variables for later.
+shutil      contains functions for copying, moving, renaming and deleting files. (Short for "shell utilities")
