@@ -443,6 +443,7 @@ SYNTAX NOTES
                          Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
                          Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
                          ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError, AttributeError, KeyError
+                         FileNotFoundError
 - PyInputPlus methods =   (requires pyinputplus library) these are for data validation. Using these functions automatically strips away leading and
                           trailing whitespace.  They can all be given the following optional keyword arguments:
                               blank=True   this option will allow inputs to be blank.  The default is that an answer is required.
@@ -512,6 +513,22 @@ SYNTAX NOTES
                           os.path.abspath(path) will return a string of the absolute path of the argument. It's an easy way to make a relative an absolute.
                           os.path.isabs(path) will return True if the arg is an absolute path.
                           os.path.relpath(path, start) will return a string of a relative path from the start path to path.  If start is not provided, cwd is used instead
+                          os.unlink(path) will delete a single file at "path"
+                          os.rmdir(path) will delete the folder at "path", but it must be empty of any files or folders to work.
+                          os.walk(string folder path) is usually used in a for loop to "walk" through a directory: that is, visit every file and subfile in
+                              a given directory.  On each pass through the loop, it returns 3 values:
+                                  a string of the current folder's name
+                                  a LIST of STRINGS of the folders in the current folder
+                                  a LIST of STRINGS of the FILES in the current folder.
+                                  ("current folder" in this case means the folder for the current iteration of the loop, not the cwd.)
+                              You can choose a variable name for the 3 values listed, such as "foldername", "subfolders", and "filenames".  Here's how to use it.
+                                  for folderName, subfolders, filenames in os.walk('some folder path'):
+                                      print('The current folder is ' + folderName)
+                                      for subfolder in subfolders:
+                                          print('Subfolder of ' + folderName + ': ' + subfolder)
+                                      for filename in filenames:
+                                          print('File inside ' + folderName + ': ' + filename)
+                              this method returns a LIST of STRINGS.
                           Getting PARTS of a filepath:  The parts of a file path include the following,
                               The 'anchor', which is the root folder (basically just a slash  /) (Windows systems have a 'drive' letter before the anchor slash)
                               The 'parent', which is the folder that contains the file
@@ -591,7 +608,18 @@ SYNTAX NOTES
                                   to the (destination).  In this case, both the source and destination args are strings.  This function returns
                                   a string of the path of the copied folder.
                               shutil.move(source, destination) will move the file or folder at "source" to the "destination".  It returns
-                                  a string of the absolute path of the new location.
+                                  a string of the absolute path of the new location. A few notes about this to avoid bugs...
+                                  - If destination points to a folder, the source file gets moved into destination and keeps its current filename.
+                                  - If the given folder exists, the file is moved into that folder, and a previous file of the same name is overwritten.
+                                  - You can add a new filename to the end of the destination to rename the new (moved) file.
+                                  - If the given folder DOESNT exist, then the new file gets RENAMED to the name of that non-existant folder without
+                                    a file extention (a hard to spot bug!)
+                              shutil.rmtree(path) will remove the folder at path, and all contained subfiles and subfolders. (By contrast, os.unlink and
+                                  os.rmdir mentioned above only remove a single file or empty folder.)
+                                  BE CAREFUL WITH THIS AND .MOVE!!  a tiny typo in a file extension could accidentally delete important stuff!
+                                  A safe practice is to comment out the part in the loop that actually does the deleting, and add a "print" line to
+                                  make sure the function does what you think it does.
+                          send2trash.send2trash(string path) is a 3rd party library that just sends files to the recycle bin rather than delete them.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
@@ -611,6 +639,7 @@ pprint      contains pprint and pformat, which help make output more readable (l
 pyperclip   (3rd party, must download) contains functions for accessing your computers clipboard, which is handy!!
             namely,  pyperclip.copy() and pyperclip.paste()
 pyinputplus (3rd party, must download) contains various data validation shortcuts so you don't have to write them yourself.
+send2trash  (3rd party, must download) contains a safer, less "permanent" way to delete files than shutil.rmtree()
 pathlib     has stuff related to filepaths, however in the book example, you don't import the whole thing.  You use the following line:
             from pathlib import Path      <---  this shortens what we need to type later.  We can just type "Path" instead of "pathlib.Path"
 shelve      contains functions related to saving and opening files that are not just plaintext. If you want to "shelve" some variables for later.
