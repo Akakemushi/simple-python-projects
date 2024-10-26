@@ -7,6 +7,7 @@ For anyone reading this, these are just my personal notes as I get to know the P
   It's useful for managing dependencies in Python projects. With pip, you can install packages like NumPy, Django, Flask, etc., by running commands
   such as       pip install package_name or  pip install --user package_name
 - to run python programs, do   python3   followed by the filename in the command line
+- the file extension for python is .py, and there is also .pyw, which won't show a terminal window when it runs.
 - REPL  stands for  Read  Evaluate  Print  Loop,  and it's a way to execute python code typed into the console and get immediate results.
 - To initiate REPL,   simply type   "python3"  with nothing after it in the console.  To exit,  either do ctrl + D  or type "exit()"
 - BUT!  There is a BETTER version of REPL, which is running    "ipython3"  which gives you stuff like remembering previous commands, using tab, etc.
