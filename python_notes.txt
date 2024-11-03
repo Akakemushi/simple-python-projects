@@ -434,16 +434,39 @@ SYNTAX NOTES
                          without anything after it, the result will also be "None".
 - Nil/Null            =  In Python, the "lack of any value" value is called "None" (with a capital N).  None is its own data type, and is the only value possible.
 - Error Handling      =  Use the "try" and "except" statements.  Code that could potentially throw an error is put into a "try" clause.  Then, if an error
-                         DOES occur, rather than crashing, the code moves to the following "except" block.  For example, try dividing by zero....
-                         def spam(divided_by):
-                             try:
-                                 return 42 / divided_by
-                             except ZeroDivisionError:
-                                 print("Error: Invalid argument.")
-                         Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
-                         Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
-                         ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError, AttributeError, KeyError
-                         FileNotFoundError
+                            DOES occur, rather than crashing, the code moves to the following "except" block.  For example, try dividing by zero....
+                            def spam(divided_by):
+                                try:
+                                    return 42 / divided_by
+                                except ZeroDivisionError:
+                                    print("Error: Invalid argument.")
+                            Note: When an error does occur, the code does NOT jump back into the "try" block.  It just keeps going from the except block.
+                            Also note that you need the NAME of the error to use the "except" clause.  Here are some names I've encountered.
+                            ZeroDivisionError, UnboundLocalError, TypeError, SyntaxError, KeyboardInterrupt, ValueError, IndexError, AttributeError, KeyError
+                            FileNotFoundError, AssertionError
+                        Debugging can be done with careful use of the 'raise' keyword.  It can be used like so...
+                            raise Exception('This is not chicken. I ordered chicken.')
+                            As you can see, it uses the 'raise' keyword, followed by a call to Exception().  If the raise was not covered by a try-except
+                            block, the program simply crashes and displays the exception's error message.  See the "boxPrint.py" program for an example.
+                            The way this usually works for custom errors is that you use an 'if' statement to detect something is wrong
+                            within a custom function, first.   Once you've MADE your custom function, you will CALL it somewhere else in your code.
+                            Put that CALL within a try/exception block.  If that 'wrong' thing is found, and an exception is thrown, it's like
+                            the exception is 'returned' from your function, which is then 'caught' by the try/except block.  The message that you
+                            attached to that particular error is what will be displayed.
+                        Tracebacks   are a bunch of error information that includes the error message, the line number of the line that caused the error,
+                            and the sequence of the function calls that led to the error.  The sequence of calls is called the "call stack".
+                            If an error isn't handled specifically, the traceback is displayed by default, but you can "capture" it as a string using
+                            traceback.format_exc()   which is in the traceback module (must be imported). So use that if you want to save the error logs.
+                        Assertions   are "sanity checks" to make sure your code isn't doing something obviously wrong.  They are created as follows:
+                            The 'assert' keyword, A conditional statement, a comma, and a string to display when the condition is false.
+                                ages = [25, 85, 23, 11]
+                                ages.sort()
+                                assert ages[0] <= ages[-1], "The ages are not sorted!"
+                            So, the assertion line checks to see if the first item in the array is less or equal to the last item.  If so, it does nothing
+                            but if not, it crashes the program right then and there, giving an AssertionError with that message.
+                            Note that these should only be seen/used by programers, NOT USERS.  Remove such code before production.
+                            Also note that assertions can be flawed if you write them with flaws (that is, they dont actually check what you want,
+                            leading to false positives/negatives.) So rigorous testing is still necessary.
 - PyInputPlus methods =   (requires pyinputplus library) these are for data validation. Using these functions automatically strips away leading and
                           trailing whitespace.  They can all be given the following optional keyword arguments:
                               blank=True   this option will allow inputs to be blank.  The default is that an answer is required.
@@ -641,23 +664,25 @@ SYNTAX NOTES
 
 STANDARD LIBRARIES    (Remember, you can use import library_name as shorthand_name to make calling the functions within easier)
 Name        Description
+copy        contains function for copying, useful for passing mutable data types such as lists and dictionaries.  Has .copy() and .deepcopy()
+logging     contains functions for debug logging quickly, like logging.basicConfig, logging.debug
+math        contains functions related to math (duh).  such as round(float) and abs(int/float) which turns values positive.
+os          contains stuff like os.chdir for changing the current working directory, os.mkdirs for creating directories, and os.listdir()
+            also contains os.path library, which has additional methods like os.path.abspath(), os.path.isabs(), os.path.getsize()
+pathlib     has stuff related to filepaths, however in the book example, you don't import the whole thing.  You use the following line:
+            from pathlib import Path      <---  this shortens what we need to type later.  We can just type "Path" instead of "pathlib.Path"
+pprint      contains pprint and pformat, which help make output more readable (like printing hash data on separate lines, for example)
+pyinputplus (3rd party, must download) contains various data validation shortcuts so you don't have to write them yourself.
+pyperclip   (3rd party, must download) contains functions for accessing your computers clipboard, which is handy!!
+            namely,  pyperclip.copy() and pyperclip.paste()
 random      contains functions related to random number generation, such as random.randint(1, 10), random.choice(list)
+re          contains functions related to regex
+send2trash  (3rd party, must download) contains a safer, less "permanent" way to delete files than shutil.rmtree()
+shelve      contains functions related to saving and opening files that are not just plaintext. If you want to "shelve" some variables for later.
+shutil      contains functions for copying, moving, renaming and deleting files. (Short for "shell utilities")
 sys         contains functions related to the.. system? I guess? Such as sys.exit(), which will terminate the program immediately.
             (normally it terminates when it reaches the bottom.  This is useful for an infinitely looping menu that doesnt exit until the user
             selects or types "exit")
-os          contains stuff like os.chdir for changing the current working directory, os.mkdirs for creating directories, and os.listdir()
-            also contains os.path library, which has additional methods like os.path.abspath(), os.path.isabs(), os.path.getsize()
-re          contains functions related to regex
-math        contains functions related to math (duh).  such as round(float) and abs(int/float) which turns values positive.
 time        contains functions for clocks and waiting, such as time.sleep(0.1)  (pause for 1/10 of a second)
-copy        contains function for copying, useful for passing mutable data types such as lists and dictionaries.  Has .copy() and .deepcopy()
-pprint      contains pprint and pformat, which help make output more readable (like printing hash data on separate lines, for example)
-pyperclip   (3rd party, must download) contains functions for accessing your computers clipboard, which is handy!!
-            namely,  pyperclip.copy() and pyperclip.paste()
-pyinputplus (3rd party, must download) contains various data validation shortcuts so you don't have to write them yourself.
-send2trash  (3rd party, must download) contains a safer, less "permanent" way to delete files than shutil.rmtree()
-pathlib     has stuff related to filepaths, however in the book example, you don't import the whole thing.  You use the following line:
-            from pathlib import Path      <---  this shortens what we need to type later.  We can just type "Path" instead of "pathlib.Path"
-shelve      contains functions related to saving and opening files that are not just plaintext. If you want to "shelve" some variables for later.
-shutil      contains functions for copying, moving, renaming and deleting files. (Short for "shell utilities")
+traceback   contains functions for getting error information, namely the call stack.
 zipfile     contains functions related to zipfiles and includes a data type called ZipFile, which has its own methods.
