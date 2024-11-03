@@ -620,6 +620,22 @@ SYNTAX NOTES
                                   A safe practice is to comment out the part in the loop that actually does the deleting, and add a "print" line to
                                   make sure the function does what you think it does.
                           send2trash.send2trash(string path) is a 3rd party library that just sends files to the recycle bin rather than delete them.
+                          zipfiles     there is a zipfile module that is simply called "zipfile".
+                              this module gives you the ability to access new objects called ZipFile and ZipInfo (with those capital letters).
+                              creating a ZipFile is similar to creating a File object, and a ZipFile object has its own set of methods. Make them like this
+                                  p = Path.home()
+                                  exampleZip = zipfile.ZipFile(p / 'example.zip')
+                                  exampleZip.namelist()  <--- will output the names of all the files in the zipfile.
+                                  spamInfo = exampleZip.getinfo('spam.txt')  <---- .getinfo creates a "ZipInfo" object about that file.
+                                  spamInfo.file_size    <---- will output the filesize in bytes as an int.
+                                  spamInfo.compress_size  <--- will output the filesize when compressed.
+                                  exampleZip.close()
+                              To extract zipfiles, call ZipFileObjectHere.extractall()   This will extract all files to the cwd.
+                              To extract a single zipfile, call .extract(file name here)
+                              You can optionally add a location where you want the file to be extracted to, if you don't want cwd.
+                              To CREATE a zipfile, you must pass the name of the file, and a second argument 'w', to put it in write mode.
+                                  You can then use zipFileName.write('addedfilename.txt', compress_type=zipfile.ZIP_DEFLATED)
+                              To ADD things to a zipfile, you must open the file in "append" mode by using 'a' as the argument, just like with files.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
@@ -644,3 +660,4 @@ pathlib     has stuff related to filepaths, however in the book example, you don
             from pathlib import Path      <---  this shortens what we need to type later.  We can just type "Path" instead of "pathlib.Path"
 shelve      contains functions related to saving and opening files that are not just plaintext. If you want to "shelve" some variables for later.
 shutil      contains functions for copying, moving, renaming and deleting files. (Short for "shell utilities")
+zipfile     contains functions related to zipfiles and includes a data type called ZipFile, which has its own methods.
