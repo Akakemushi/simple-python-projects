@@ -467,6 +467,27 @@ SYNTAX NOTES
                             Note that these should only be seen/used by programers, NOT USERS.  Remove such code before production.
                             Also note that assertions can be flawed if you write them with flaws (that is, they dont actually check what you want,
                             leading to false positives/negatives.) So rigorous testing is still necessary.
+- Debugging             The Logging Module --  This is a library you import at the top.  You need to "activate it" (my words, not the textbook's)
+                            by including the following line of code, after all the import statements:
+                                logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s -  %(levelname)s -  %(message)s')
+                            Don't worry too much about how that line works, basically when Python logs an event, it creates a LogRecord object
+                                that holds information about that event.  See the program "factorialLog.py" for an example that has a bug in it on purpose.
+                                asctime notes the timing of the event, levelname sets the minimum priority level needed for an event to be logged, and message
+                                is of course the message.  There are 5 priority levels. Lowest is DEBUG, then INFO, WARNING, ERROR, and CRITICAL.
+                            Once you have it set up, you can throw in this line of code...
+                                logging.debug('Message to yourself for debugging purposes goes here.')  or  logging.warning('Looks bad bro!')
+                                ...instead of using print() everywhere.  USE THIS FOR BEST PRACTICES!  It is superior to print() because you can
+                                easily enable and disable ALL or SOME of the logs with one simple line of code, rather than manually searching through
+                                and adding/removing various print() commands.  That command is    logging.disable(logging.CRITICAL) and it disables logs
+                                at the given priority level or lower (so, "CRITICAL" would be all of them).  (Note however that you SHOULD use print() to
+                                display info that the user WOULD want to see at some point.)
+                            If you wanna log to a file instead of the console, you can add an extra argument to the front of the basicConfig line...
+                                logging.basicConfig(filename='myProgramLog.txt', level=logging.DEBUG, format=bla bla bla...).
+                                Each time you run the code, the textfile is APPENDED, not overwritten.
+                            Breakpoint Debugging.  In VS Code you can add breakpoints to pause the code at certain points by activating the little reduce
+                                dot in the margin, and then selecting the debug menu from the left-side navbar, and clicking "Run and Debug".
+                                You will then get the (very small) navbar at the top of the screen where you can "step through" the various breakpoints.
+                                The real-time values of your variables (both local and global) will be displayed on the left-side panel.
 - PyInputPlus methods =   (requires pyinputplus library) these are for data validation. Using these functions automatically strips away leading and
                           trailing whitespace.  They can all be given the following optional keyword arguments:
                               blank=True   this option will allow inputs to be blank.  The default is that an answer is required.
@@ -686,3 +707,9 @@ sys         contains functions related to the.. system? I guess? Such as sys.exi
 time        contains functions for clocks and waiting, such as time.sleep(0.1)  (pause for 1/10 of a second)
 traceback   contains functions for getting error information, namely the call stack.
 zipfile     contains functions related to zipfiles and includes a data type called ZipFile, which has its own methods.
+
+INTERNET-RELATED LIBRARIES
+bs4         parses HTML documents.
+requests    downloads files and web pages from the internet.
+selenium    launches and controls a web browser.  It can fill in forms and simulate mouse clicks in the browser.
+webbrowser  comes with Python an opens a browser to a specific page (...and that's about it).
