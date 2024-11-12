@@ -680,6 +680,14 @@ SYNTAX NOTES
                               To CREATE a zipfile, you must pass the name of the file, and a second argument 'w', to put it in write mode.
                                   You can then use zipFileName.write('addedfilename.txt', compress_type=zipfile.ZIP_DEFLATED)
                               To ADD things to a zipfile, you must open the file in "append" mode by using 'a' as the argument, just like with files.
+- requests (internet dl)  This is a module (3rd party) that allows you to download stuff off the internet.  It's easier and simpler than urllib2...
+                              so don't even try that one (apparently).  Here are some of its functions.
+                          requests.get(url_here) takes a string of a URL to download.  What you get back is not text, but a RESPONSE object, which has
+                              its own methods and features.  For demonstration purposes, I'll call it "response".
+                          type(response)  will say "class 'requests.models.Response'"   so that's its "data type" so to speak.
+                          response.status_code contains an html response code like 200, 404, etc...
+                          requests.codes.ok   (and presumably requests.codes.other_code_types_here) associates works with those numbers? Maybe?  Seems like it.
+                          response.text  will give you the text recovered from that website (not sure how thorough, needs investigation. P elements? H1?)
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
@@ -710,9 +718,9 @@ zipfile     contains functions related to zipfiles and includes a data type call
 
 INTERNET-RELATED LIBRARIES
 bs4         parses HTML documents.
-requests    downloads files and web pages from the internet.
+requests    downloads files and web pages from the internet.   (Works on WSL! Yay!)
 selenium    launches and controls a web browser.  It can fill in forms and simulate mouse clicks in the browser.
-webbrowser  comes with Python an opens a browser to a specific page (...and that's about it).
+webbrowser  comes with Python an opens a browser to a specific page (...and that's about it). !! Does NOT work on WSL....
 
 OTHER TROUBLESHOOTING AND LEARNING THROUGH TRIAL AND ERROR Stuff
 --    So it seems that Rails servers can be opened through the terminal because of how Rails is optimized for web development.  Python's webbrowser
