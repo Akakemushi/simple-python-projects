@@ -713,3 +713,18 @@ bs4         parses HTML documents.
 requests    downloads files and web pages from the internet.
 selenium    launches and controls a web browser.  It can fill in forms and simulate mouse clicks in the browser.
 webbrowser  comes with Python an opens a browser to a specific page (...and that's about it).
+
+OTHER TROUBLESHOOTING AND LEARNING THROUGH TRIAL AND ERROR Stuff
+--    So it seems that Rails servers can be opened through the terminal because of how Rails is optimized for web development.  Python's webbrowser
+      module does not have that luxury, and lacks some inter-process communication (IPC) features that Rails has.  There are limitations to
+      how the programs and executables hosted on the Windows OS and WSL can communicate and/or call one another.  Chrome, among other browsers and
+      programs, is on Windows, and so it's hard (for reasons I don't fully grasp yet) for WSL to access them beyond simply launching them.
+--    There is something called the $PATH environment variable that is a colon-separated list of file paths.  This is a list of DIRECTORIES (not actual
+      executables or files) that should be searched (in order) when you type a command in the terminal.  Things like the basic "ls" or "mv", are
+      executable files that live in /bin, and likewise, other commands like python3 or ipython3 are also executables.  Having the directories that
+      these programs are stored in in the $PATH variable saves you the trouble of having to type out the full file path, and allows you to just type that
+      keyword.   For files stored on the Windows side of things, you generally start the path with   /mnt/c/Users   and go from there. As an example,
+      I added this -->  export PATH="$PATH:/mnt/c/Program Files/Google/Chrome/Application"    to make chrome.exe available to me from the command line.
+      Also note that while you can run that command on the CLI, the effect will only be temporary.  As soon as you close the terminal or restart it,
+      That addition to the $PATH will be gone.  If you want to make it permanent, you have to add that command to the .zshrc file (which I did).  Also
+      note that the .zshrc file may or may not exist yet, so just create it if it doesn't.
