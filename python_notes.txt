@@ -683,11 +683,54 @@ SYNTAX NOTES
 - requests (internet dl)  This is a module (3rd party) that allows you to download stuff off the internet.  It's easier and simpler than urllib2...
                               so don't even try that one (apparently).  Here are some of its functions.
                           requests.get(url_here) takes a string of a URL to download.  What you get back is not text, but a RESPONSE object, which has
-                              its own methods and features.  For demonstration purposes, I'll call it "response".
+                              its own methods and features.  For demonstration purposes, I'll call it "response" in later examples.  If you want to
+                              save the downloaded file to your harddrive, you can do that by using open() and write() like with other files, with A
+                              bit of a change.  First, you must open the file in "write binary" mode by using 'wb' as the second argument for open().
+                              Next, you use the Response objects  .iter_content() method (see below).
                           type(response)  will say "class 'requests.models.Response'"   so that's its "data type" so to speak.
-                          response.status_code contains an html response code like 200, 404, etc...
+                          response.status_code contains an html response code like 200, 404, etc... you can look more up online if needed.
                           requests.codes.ok   (and presumably requests.codes.other_code_types_here) associates works with those numbers? Maybe?  Seems like it.
-                          response.text  will give you the text recovered from that website (not sure how thorough, needs investigation. P elements? H1?)
+                          response.text  will give you the text recovered from that website (a .txt version of the html file)
+                          response.raise_for_status()  will do nothing if the response was successful, otherwise it will raise an exception.
+                              This method is a good way to make sure a program stops if a download fails. If, however, a failed download is NOT a dealbreaker
+                              for your program, you can wrap it in a "try" and "except" block to handle the error, like the following example...
+                                  import requests
+                                  res = requests.get('https://inventwithpython.com/page_that_does_not_exist')
+                                  try:
+                                      res.raise_for_status()
+                                  except Exception as exc:
+                                      print('There was a problem: %s' % (exc))
+                          response.iter_content(number of bytes goes here)  is used in a for loop to get a specified number of bytes at a time.
+                              The number doesn't seem to matter as far as I can tell, but the book recommends 100000 (one hundred thousand).
+                              The for loop created will go until the end of the file, and within this loop, you need to call write() to
+                              write the current "chunk" of bytes to the HD.  Here's an example:
+                                  <stuff to visit the page and download the file, saving it to a variable called "response" goes here...>
+                                  myFile = open('someFileName.mp3', 'wb')
+                                  for chunk in response.iter_content(100000):
+                                      myFile.write(chunk)
+                                  myFile.close()
+- bs4 (internet dl)       This is short for "Beautiful Soup 4", a third-party module used to easily parse html files so you don't need to write complex
+                              regex statements.  By running bs4.BeautifulSoup(response.text, 'html.parser'), it will return a "BeautifulSoup" object (lol)
+                                  import requests, bs4
+                                  response = requests.get('https://nostarch.com')
+                                  res.raise_for_status()  <-- just to check for errors
+                                  noStarchSoup = bs4.BeautifulSoup(response.text, 'html.parser')  <--- now "noStarchSoup" is a BeautifulSoup object.
+                              Once you have the BS object (lol again) you have options for what to do with it through the following methods...
+                          soup.select('div')                  all elements named <div>
+                          soup.select('#author')              the element with an id attribute of 'author'
+                          soup.select(.notice')               all elements that use a css class attribute named 'notice'
+                          soup.select('div span')             all elements named <span> that are within an element named <div>
+                          soup.select('div > span')           all elements named <span> that are DIRECT CHILDREN of an element named <div>
+                          soup.select('input[name])           all elements named <input> that have a name attribute with any value
+                          soup.select('input[type="button"]') all elements named <input> that have an attribute named type with value 'button'
+                          soup.select('p #author')            the element with an id attribute of 'author', if it is also within a <p> element.
+                              (Protip: in the browser dev tools, right click an element and select copy --> copy selector to quickly get the selector.)
+                              all of these .selector() examples return a LIST of Tag objects, one per match found. If you want to see them, pass them
+                              to str() to make them official strings and print them out. You can get at the individual Tags via normal array indexes.
+                              tagList[0], tagList[1], etc...
+                          someTag.getText() will return the INNER HTML string of the element.
+                          someTag.attrs  will return a HASH of the attribute/value pairs (if any) in the element, such as {'id': 'author'}  (side note, why no () for the method call? hmm..)
+                          someTag.get('some attribute goes here')  to get the value of that attribute (if it exists).
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
@@ -717,7 +760,7 @@ traceback   contains functions for getting error information, namely the call st
 zipfile     contains functions related to zipfiles and includes a data type called ZipFile, which has its own methods.
 
 INTERNET-RELATED LIBRARIES
-bs4         parses HTML documents.
+bs4         parses HTML documents. (Using this is better than just using Regex... less error prone.) FYI, it stands for 'Beautiful Soup 4'
 requests    downloads files and web pages from the internet.   (Works on WSL! Yay!)
 selenium    launches and controls a web browser.  It can fill in forms and simulate mouse clicks in the browser.
 webbrowser  comes with Python an opens a browser to a specific page (...and that's about it). !! Does NOT work on WSL....
@@ -736,3 +779,18 @@ OTHER TROUBLESHOOTING AND LEARNING THROUGH TRIAL AND ERROR Stuff
       Also note that while you can run that command on the CLI, the effect will only be temporary.  As soon as you close the terminal or restart it,
       That addition to the $PATH will be gone.  If you want to make it permanent, you have to add that command to the .zshrc file (which I did).  Also
       note that the .zshrc file may or may not exist yet, so just create it if it doesn't.
+--    Thanks to some help from Yann, I now have a solution for how to get the webbrowser.open method working.  Here's the message he sent me.
+      Try the following:
+      Run the command:
+        ls /mnt/c/Program\ Files\ \(x86\)/Google/Chrome/Application/chrome.exe
+      Did you get an error like ls: cannot access...?
+      Yes, I had an error
+      Run the following commands:
+        echo "export BROWSER=\"/mnt/c/Program Files/Google/Chrome/Application/chrome.exe\"" >> ~/.zshrc
+        echo "export GH_BROWSER=\"'/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'\"" >> ~/.zshrc
+      No, everything was fine
+      Run the following commands:
+        echo "export BROWSER=\"/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe\"" >> ~/.zshrc
+        echo "export GH_BROWSER=\"'/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe'\"" >> ~/.zshrc
+--    Fun shortcut!  Push f12 to open the dev tools in the browser!  Didn't know that!
+--    CSS Selector trick!  From the dev tools, you can quickly copy the FULL css selector by right clicking an element, --> copy --> copy selector
