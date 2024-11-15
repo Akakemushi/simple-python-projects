@@ -552,11 +552,14 @@ SYNTAX NOTES
                               The single dot version is optional; if you just start with the folder and/or filename, it does the same thing.
                           os.makedirs()  and  os.chdir() are for making and changing directories, respectively. (Just an FYI for a shortcut, you can
                               just write out a long filepath that doesn't exist yet when using os.makedirs, and all the necessary intermediate folders
-                              that would be needed to get to the final file/folder are also created along the way.)
+                              that would be needed to get to the final file/folder are also created along the way.) Also, if you want to to write more
+                              robust code that doesn't fail in case you already happen to have a folder of that name, you can add the keword argument
+                              os.makedirs('some_name', exist_ok=True)
                           Path(some_path).mkdir() will turn a path object into a directory.  NOTE THAT THIS IS NOT THE SAME AS os.makedirs() !!!
                           os.path.abspath(path) will return a string of the absolute path of the argument. It's an easy way to make a relative an absolute.
                           os.path.isabs(path) will return True if the arg is an absolute path.
                           os.path.relpath(path, start) will return a string of a relative path from the start path to path.  If start is not provided, cwd is used instead
+                          os.path.basename(path) will return just the basename (aka filename) of a path (or even a url!)
                           os.unlink(path) will delete a single file at "path"
                           os.rmdir(path) will delete the folder at "path", but it must be empty of any files or folders to work.
                           os.walk(string folder path) is usually used in a for loop to "walk" through a directory: that is, visit every file and subfile in
@@ -731,6 +734,13 @@ SYNTAX NOTES
                           someTag.getText() will return the INNER HTML string of the element.
                           someTag.attrs  will return a HASH of the attribute/value pairs (if any) in the element, such as {'id': 'author'}  (side note, why no () for the method call? hmm..)
                           someTag.get('some attribute goes here')  to get the value of that attribute (if it exists).
+- selenium (internet dl?) Selenium is a module that opens a browser and manipulates it, simulating mouse clicks, filling in forms, etc, (kinda like
+                              hotkeys? maybe?) It is slower than just using requests and bs4 because it MUST open a browser, but it is needed for more
+                              sophisticated websites when Javascript and logins come into the mix.  For a bit of technical info, selenium is a way to get
+                              around website defenses that look at the "user-agent" part of the http request to determine if you're a bot or not, because
+                              selenium will be using your browser to make those requests.
+                          Importing the selenium module into your code is a bit different... instead of "import selenium", you need to run "from selenium import webdriver"
+                          
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
@@ -762,7 +772,8 @@ zipfile     contains functions related to zipfiles and includes a data type call
 INTERNET-RELATED LIBRARIES
 bs4         parses HTML documents. (Using this is better than just using Regex... less error prone.) FYI, it stands for 'Beautiful Soup 4'
 requests    downloads files and web pages from the internet.   (Works on WSL! Yay!)
-selenium    launches and controls a web browser.  It can fill in forms and simulate mouse clicks in the browser.
+selenium    launches and controls a web browser.  It can fill in forms and simulate mouse clicks in the browser. Use this when requests and bs4
+            aren't enough and the website is more sophisticated (requiring login or something)
 webbrowser  comes with Python an opens a browser to a specific page (...and that's about it). !! Does NOT work on WSL....
 
 OTHER TROUBLESHOOTING AND LEARNING THROUGH TRIAL AND ERROR Stuff
