@@ -740,7 +740,82 @@ SYNTAX NOTES
                               around website defenses that look at the "user-agent" part of the http request to determine if you're a bot or not, because
                               selenium will be using your browser to make those requests.
                           Importing the selenium module into your code is a bit different... instead of "import selenium", you need to run "from selenium import webdriver"
-                          
+                          JESUS CHRIST THIS THING IS DIFFICULT TO INSTALL ON WSL!!!  Still haven't figured it out yet... skipping for now.
+- ezsheets (internet dl)  This is a module for working with xl files that are on google sheets.  Installing it was a bit of a pain in the ass, but I
+                              eventually got there.  The hard part was getting these three files into the repository - credentials-sheets.json, and then
+                              token-drive.pickle and token-sheets.pickle  .   All I can say is that trying over and over again to import ezsheets, getting
+                              the localhost up as fast as possible eventually worked... I really don't know how I got those pickle files, but somehow I did.
+                          ezsheets.Spreadsheet('id string of a file you have on google sheets goes here') will create a Spreadsheet object that you can
+                              work with inside of your code. You can also use the title of the spreadsheet (if there is only one with that name), or the
+                              full URL, (which honestly sounds like more work that is neccessary, but the option is there.)
+                          ezsheets.createSpreadsheet('Title of Spreadsheet')  will create a new spreadsheet (creates it online! neat!)
+                          ezsheets.upload('my_spreadsheet.xlsx')  will upload an existing xlsx file to google
+                          ezsheets.listSpreadsheets()  will return a hash(dictionary) of all the sheets you have on google, with their ids and titles as
+                              key-value pairs
+                          ezsheets.convertAddress('A2') turns this string into the tuple (1, 2)
+                                                 (1, 2) it will ALSO work in reverse, changing this tuple into the string 'A2'
+                          ezsheets.getColumnLetterOf(2)  will return 'B'
+                          ezsheets.getColumnNumberOf('B') will return the int 2
+                              The above 3 methods become useful when you get really really BIG tables... what letter is column 1,354 for example?
+                          Spreadsheet object Attributes/Methods:
+                              myspreadsheet.title  returns the title of the spreadsheet.
+                              myspreadsheet.title = "something else"    changes the title.
+                              myspreadsheet.spreadsheetId    returns the ID of the sheet (read-only)
+                              myspreadsheet.url   returns the full URL of the sheet (read-only)
+                              myspreadsheet.sheetTitles   returns the titles of all the Sheet objects (A Spreadsheet object can have many "Sheet" objects)
+                              myspreadsheet.sheets   returns the Sheet objects in this Spreadsheet, in order.
+                              myspreadsheet[0]   is the first Sheet object in this Spreadsheet. (Functionally equivalent to myspreadsheet.sheets[0])
+                              myspreadsheet['Students']   Sheet objects can also be accessed through titles.
+                              myspreadsheet.delete()   deletes the entire spreadsheet.
+                              myspreadsheet[0].delete()   deletes the first sheet within the spreadsheet.
+                              myspreadsheet.createSheet('New Name')   will create a new sheet at the end of the list of sheets
+                              myspreadsheet.createSheet('New Name', 0)  will create a new sheet at the specified index of sheets.
+                              del myspreadsheet[0]   Deletes the first Sheet object in this Spreadsheet.
+                              myspreadsheet.refresh()    checks online and syncronizes the data in the local spreadsheet with the one online if any
+                                  changes are detected.
+                              Downloading and Uploading
+                                  You can convert the xlsx files into other filetypes with these commands...
+                                      myspreadsheet.downloadAsExcel()  .downloadAsODS()  .downloadAsCSV()  .downloadAsTSV()  .downloadAsPDF() .downloadAsHTML()
+                                  No matter which one you use, it returns a string of the downloaded file's filename.  You can also specify the filename by
+                                  passing the new filename to the download function as a string, such as 'some_file.xlsx'
+                              Copying sheets into another spreadsheet...
+                                  If you wanna copy a whole sheet from one Spreadsheet and add it (not overwrite) to a different spreadsheet, use this...
+                                      spreadsheetone[0].copyTo(spreadsheettwo)
+                          Sheet object Attributes/Methods  (again, note that Sheets are held within a Spreadsheet)
+                              mysheet['A1']    reads the value in cell A1  (empty cells return a blank string)
+                              mysheet['A1'] = 'Name'   Sets the value in cell A1
+                              mysheet[1, 1] is functionally equivalent to mysheet['A1'].  Note the usage of quotes in each case, and also that the first
+                                  number is 1, not 0.  For sheet cells, indexes start at 1.
+                              mysheet.refresh()   syncronizes with any changes in the online version.
+                              mysheet.delete()   deletes the whole sheet
+                              mysheet.clear()   clears all the cells within the sheet, but the sheet itself remains. (important distinction)
+                              mysheet.getRow(1)   will return an array/list of all the values stored across row 1. Note that it returns quite a few blank
+                                  cells beyond the "end" of your table... not sure how the number of cells returned is determined though. <<SOLVED>> The number
+                                  of rows is set when the sheet is created (there may be some defaults or something).
+                              mysheet.getColumn(1)  will return an array/list of all the values stored down column 1
+                                  note that you can use letters instead of numbers for the above methods.
+                              mysheet.updateRow(3, ['Pumpkin', '11.50', '20', '230'])   will OVERWRITE that row with the data in the array given, EVEN
+                                  DATA BEYOND WHAT YOUR ARRAY INCLUDES WILL BE RESET!! So beware.  In this example, columns E, F, G... would all be "reset" to blank.
+                              mysheet.updateColumn(2, ['bla', 'bla', 'bla']) like the above.
+                                  you can also iterate over these lists if needed like so:
+                                      columnOne = sheet.getColumn(1)
+                                      for i, value in enumerate(columnOne):
+                                          columnOne[i] = value.upper()
+                                  ... and then use your modified column or row...
+                                      sheet.updateColumn(1, columnOne)
+                              rows = sheet.getRows()   will return an array of arrays (matrix) of ALL your rows.  You can then access them like this...
+                                  rows[0]  gives the array of cells in row 1..
+                                  rows[1][0]  gives the data in the cell A2
+                                  you can change the values with the = operator as usual.
+                              sheet.updateRows(rows) (assuming you stored the matrix in a variable called "rows" like above)  This will update your sheet with
+                                  the data stored in your variable.
+                              sheet.rowCount   returns the number of rows in your sheet.
+                              sheet.columnCount  returns the number of columns
+                              sheet.columnCount (or .rowCount) =  4   You can change the size of your sheet with =
+                                  Naturally, if you make it smaller, columns/rows that now fall outside of its new size will be deleted, and their data too.
+                          Final points:  Google sheets has a usage limit of 250 new spreadsheets a day, and 100 read and 100 write requests per 100 seconds.
+                              Attempting to exceed this limit will raise the googleapiclient.errors.HttpError "Quota exceeded for quota group". So, if you
+                              write some scripts and they start behaving weird, this may be why if you're working with a LOT of data.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
