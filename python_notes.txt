@@ -49,6 +49,9 @@ For anyone reading this, these are just my personal notes as I get to know the P
 - Libraries/modules are needed to access other functions in Python.  SEE LIBRARIES SECTION FOR LIST
   To include/access those functions in your program, you use the "import" keyword, the name of the module,
   and optionally, more module names separated by commas  DO NOT OVERWRITE MODULES BY GIVING YOUR FILES THE SAME NAME!!
+  On that note, You CAN make your own modules (which is just a fancy word for another .py file you've saved in the repository or on your PATH somewhere)
+  which is really useful for making little methods/functions that you want to reuse and import elsewhere.  For an example of this, look at the file
+  "readDocx.py".  I made this, and I can import it and use the function defined within with   readDocx.getText(filename)   Pretty sweet!
 - Keyword Arguments  ---  What is it?  Most arguments are identified by their POSITION in the parentheses, but keyword arguments are called by name
   right before the argument passed to them, like so...  print("Hello", end="")    <-- here "end" is an optional parameter being filled in. (If you careful
   to know, it declares what the final character(s) will be, replacing the default new line character. Another you could use with print() is the "sep" argument
@@ -857,11 +860,34 @@ python-docx (net dl)      This module works with Word documents (.docx).  NOTE!!
                               objects which contain a list of one or more "Run" objects. This last one is the most unintuitive, but it's really not that
                               hard.  It's just a "run" of text that uses the same formatting, such as bold, italics, font, size, color.... So A
                               single "run" covers all the consecutive characters up to the point that the style changes, at which point a new "run"
-                              begins.
+                              begins.  If you don't care about style and just want the text, it seems like you have to write your own custom funciton...
+                                  import docx
+                                  def getText(filename):
+                                      doc = docx.Document(filename)
+                                      fullText = []
+                                      for para in doc.paragraphs:
+                                          fullText.append(para.text)
+                                      return '\n'.join(fullText)
+                              Create a new file named "readDocx.py" or whatever, enter the above code and save it.  Now you can import that "readDocx"
                           doc = docx.Document('filename to open.docx')    First, create a Document object from a file. Now you can work with it.
                           len(doc.paragraphs)  returns the number of Paragraph objects in the doc.
                           doc.paragraphs[0].text   returns a string with the text in the first paragraph.
                           doc.paragraphs[1].runs[0].text   returnst a string with the text in the first run of the second paragraph.
+                          Paragraph and Run objects have a "style" attribute which can be set to a number of predefined styles (denoted by strings)
+                          There are "paragraph" styles for paragraphs, "character" styles for runs, and "linked" styles that work for both (linked styles below)
+                              Normal        Heading 5       List Bullet       List Paragraph
+                              Body text     Heading 6       List Bullet 2     MacroText
+                              Body Text 2   Heading 7       List Bullet 3     No spacing
+                              Body Text 3   Heading 8       List Continue     Quote
+                              Caption       Heading 9       List Continue 2   Subtitle
+                              Heading 1     Intense Quote   List Continue 3   TOC Heading
+                              Heading 2     List            List Number       Title
+                              Heading 3     List 2          List Number 2
+                              Heading 4     List 3          List Number 3     None   <--  for no style.
+                          When using a linked style for a Run object, you will need to add ' Char' to the end of its name, so 'Quote' becomes 'Quote Char'.
+                          Also note that python-docx CANNOT add any styles beyond the default ones, BUT!  It IS possible to add new styles using MS Word
+                          itself (or similar app), save the file, and then open it in python-docx. If you do it that way, those new style will become
+                          available to use in your code (apparently.  Havent tried it yet)
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
