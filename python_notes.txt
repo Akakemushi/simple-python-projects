@@ -817,6 +817,51 @@ SYNTAX NOTES
                               Attempting to exceed this limit will raise the googleapiclient.errors.HttpError "Quota exceeded for quota group". So, if you
                               write some scripts and they start behaving weird, this may be why if you're working with a LOT of data.
                               For a complete list of all of ezsheet's features, go to ezsheets.readthedocs.io
+PyPDF2 (internet dl)      This module is for working with PDFs.  It seems like the file needs to be stored locally (if online usage is possible, i
+                              don't know.) import with     'import PyPDF2'   You can read the text off of pdfs and create your own (sort of).  The
+                              creation aspect is limited to just copying pages from other pdfs, rotating them, overlaying (for timestamps and logos
+                              and watermarks and stuff...), and encrypting. Some stuff you could use this for are: cutting out specific pages from a pdf,
+                              reordering pages in a pdf, and creating a new pdf from only those pages that have some specific text.
+                          FOR READING PDFs....
+                          myPDF = open('filename.pdf', 'rb')  step 1:  open the file in "read binary" mode.
+                          myPyPDF = PyPDF2.PdfFileReader(myPDF)    step 2:  create a PyPDF object from the open file. Now you have options to work with it.
+                          myPyPDF.isEncrypted    will return True or False, telling you if the file is password protected or not.
+                          myPyPDF.decrypt('password')   will unlock the file for use (returning 1 if successful and 0 if not.)  Note that this only
+                              decrypts the PyPDF object, not the actual original PDF.
+                          myPyPDF.numPages   returns the number of pages in the pdf as an int.
+                          myPage = myPyPDF.getPage(0)  <--  function for getting a single page object from the whole pdf and storing it in a variable.
+                              note that this system is zero-indexed, like an array.
+                          myPage.extractText()  <--  returns a string with all of the text on that page.  This is imperfect, as sometimes the "text"
+                              you see in the PDF isn't text at all, but an image.  It can also make mistakes with spacing, etc.
+                          myPage.rotateClockwise(90)   will rotate the pdf x degrees
+                          myPage.rotateCounterClockwise(90)   same
+                          myPage.mergePage(anotherPage)   will overlay the page in the argument on top of the base page (I guess there's something like
+                              an alpha channel in play here.)
+                          FOR WRITING PDFs....
+                          newPDF = open('myNewFile.pdf', 'wb')   step 1:  open a new file in "write binary" mode.  Name it whatever you want.
+                              This will be the file that gets saved to the HD in the end, but for now it's just blank.
+                              step 2: open any other preexisting pdfs using the above methods and making PyPDF objects out of them.
+                          pdfWriter = PyPDF2.PdfFileWriter()   step 3:  create the running code version of the PDF.  We make additions and changes here,
+                              and as a last step this gets saved to the new file that we opened earlier.  It's basically a temporary PDF sandbox.
+                          pdfWriter.addPage(myPage)   You can add pages to the writer object like this, once you've copied them from an old pdf.
+                              Pages are always added to the end of the pdf.  You can't put them in the middle or anything.
+                          pdfWriter.write(newPDF)  step 4: finally, you "save" the file by writing your changes to the blank pdf. (dont forget run close())
+                          pdfWriter.encrypt('password you want')    use this before writing if you want to add encryption to the pdf.  You can actually
+                              have TWO passwords; a user password (allowing viewing), and an owner password (allowing you to set permissions for printing
+                              commenting, extracting text, and more).  The user password and owner pw are the first and second arguments passed to .encrypt()
+                              respectively.  If only one string argument is passed, it will be used to set both passwords.
+python-docx (net dl)      This module works with Word documents (.docx).  NOTE!!  when INSTALLING, it is called "python-docx", but when IMPORTING it is
+                              simply done with  "import docx".  There is actually a different module that is just called "docx", so don't make that
+                              mistake.   .docx are more complex than .txt and can be represented by 3 data-types.  a "Document" object representing
+                              the whole document (has a list of Paragraph objects, which are created whenever the user hits the "enter" key), "Paragraph"
+                              objects which contain a list of one or more "Run" objects. This last one is the most unintuitive, but it's really not that
+                              hard.  It's just a "run" of text that uses the same formatting, such as bold, italics, font, size, color.... So A
+                              single "run" covers all the consecutive characters up to the point that the style changes, at which point a new "run"
+                              begins.
+                          doc = docx.Document('filename to open.docx')    First, create a Document object from a file. Now you can work with it.
+                          len(doc.paragraphs)  returns the number of Paragraph objects in the doc.
+                          doc.paragraphs[0].text   returns a string with the text in the first paragraph.
+                          doc.paragraphs[1].runs[0].text   returnst a string with the text in the first run of the second paragraph.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
