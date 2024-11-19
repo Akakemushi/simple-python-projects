@@ -816,6 +816,7 @@ SYNTAX NOTES
                           Final points:  Google sheets has a usage limit of 250 new spreadsheets a day, and 100 read and 100 write requests per 100 seconds.
                               Attempting to exceed this limit will raise the googleapiclient.errors.HttpError "Quota exceeded for quota group". So, if you
                               write some scripts and they start behaving weird, this may be why if you're working with a LOT of data.
+                              For a complete list of all of ezsheet's features, go to ezsheets.readthedocs.io
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
