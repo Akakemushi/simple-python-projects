@@ -853,6 +853,8 @@ PyPDF2 (internet dl)      This module is for working with PDFs.  It seems like t
                               have TWO passwords; a user password (allowing viewing), and an owner password (allowing you to set permissions for printing
                               commenting, extracting text, and more).  The user password and owner pw are the first and second arguments passed to .encrypt()
                               respectively.  If only one string argument is passed, it will be used to set both passwords.
+                          You can't create PDF documents directly with this, but you can generate PDF files if you're on Windows and have MS Word.  I won'T
+                              go into it here, just know that it exists, and you need to install   pip install --user -U pywin32==224
 python-docx (net dl)      This module works with Word documents (.docx).  NOTE!!  when INSTALLING, it is called "python-docx", but when IMPORTING it is
                               simply done with  "import docx".  There is actually a different module that is just called "docx", so don't make that
                               mistake.   .docx are more complex than .txt and can be represented by 3 data-types.  a "Document" object representing
@@ -887,7 +889,61 @@ python-docx (net dl)      This module works with Word documents (.docx).  NOTE!!
                           When using a linked style for a Run object, you will need to add ' Char' to the end of its name, so 'Quote' becomes 'Quote Char'.
                           Also note that python-docx CANNOT add any styles beyond the default ones, BUT!  It IS possible to add new styles using MS Word
                           itself (or similar app), save the file, and then open it in python-docx. If you do it that way, those new style will become
-                          available to use in your code (apparently.  Havent tried it yet)
+                          available to use in your code (apparently.  Havent tried it yet). Specifically, you need to use the "Create New Style" features
+                          in Word to do this. Runs can be further styled using text attributes.  Each attribute can be set to one of three values:
+                              True: The attribute is always enabled, no matter what other styles are applied to the run
+                              False: The attribute is always disabled
+                              None: Defaults to whatever the run's style is set To
+                          The following are the attributes that run objects have:
+                              bold, italic, underline, strike, double_strike, all_caps, shadow, outline, rtl (written right to left), imprint, emboss
+                          To create a new file from scratch, do something like:
+                              doc = docx.Document()
+                              doc.add_paragraph('Text you wanna add goes here')
+                              doc.save('myfilename.docx')
+                              ...and voila, it's done.
+                          Whenever you call the .add_paragraph() method it makes a NEW paragraph.  If you want to ADD to an EXISTING paragraph, first
+                              you need to get that paragraph and save it to a variable as a paragraph object, such as   paraObj1 = doc.add_paragraph('Your text')
+                              Then you can add to that paragraph specifically with paraObj1.add_run('more text')   (don't forget to save with doc.save)
+                              You can save run object to variables as well if you want to.
+                          Both add_paragraph() and add_run() accept an optional second argument that is a string of the Paragraph or Run object's style.
+                              doc.add_paragraph('Hello, world!', 'Title')   This will add the paragraph with the Title style applied to it.
+                          .add_heading('Heading title', 1) works much the same, but only for headers that can have a "style" which is an integer from 0 to 4.
+                              Note that this function returns a paragraph object, but exists because its second argument can be an int, not a string.
+                          runObject.add_break will add a line break without starting a new paragraph object.   If you need a page break instead,
+                              you need to pass the value,  docx.enum.text.WD_BREAK.PAGE as a lone argument to add_break()  (it's a mouthful, but that's just
+                              how it works...)  A page break will, of course, force the text after it to appear on the following page, even if there was
+                              still space left on the previous page.
+                          .add_picture('filename.png', width=docx.shared.Inches(1), height=docx.shared.Cm(4))  will add the pic to the end of the doc (I'made
+                              not sure which img file types are allowed with this...)  also, the height and width are optional, leaving them blank will
+                              use the pictures acutal height and width.
+CSV FILES                 I know this, but a quick refresher: comma-separated values.  everything is a string, so no data-types. No cells, formats, etc. Very simple.
+                              use the csv module to handle csv files.  If you just treat them as strings, you'll run into problems parsing the commas, since
+                              csv files have their own escape characters and stuff.
+                          the built-in python module is just called "csv" so you can do   import csv
+                          First, open the file with open() and put it in a variable     exampleFile = open('example.csv')
+                          Next, make a csv reader object from that file object...     exampleReader = csv.reader(exampleFile)
+                          Now you can work with the data....       exampleData = list(exampleReader)  exampleData is a matrix (array of arrays)
+                              so you can access anything with the standard index format:   exampleData[1][2]   etc...
+                          For really big files, you might not want to load the WHOLE thing into memory all at once, so use a FOR loop instead...
+                              for row in exampleReader:
+                                  print('Row #' + str(exampleReader.line_num) + ' ' + str(row))     ... or whatever you wanna do with it.
+                              NOTE!!  For some reason, you can only loop over a Reader object ONCE, then it's... gone?  I guess?  You have to make a new one
+                              if you wanna loop over the object again.  Maybe that's why it's a good idea to convert the object to a data matrix?
+                          exampleReader.line_num   apparently returns an int of the line number you're currently on in the loop?  weird...
+                          Writer Object -  use to write stuff to a CSV file.  To create one, use the csv.writer() function.
+                              outputFile = open('output.csv', 'w', newline='') <-- (technical issue with windows, so the keyword arg is needed)
+                              outputWriter = csv.writer(outputFile)
+                              outputWriter.writerow(['spam', 'eggs', 'bacon', 'ham'])
+                              outputWriter.writerow(['Hello, world!', 'eggs', 'bacon', 'ham']) <-- note the comma in Hello, world will be handled by the module.
+                              outputFile.close()
+                          .tsv file is same as csv, but TAB separated values.  These functions are still within the csv module though.
+                              csvFile = open('example.tsv', 'w', newline='')
+                              csvWriter = csv.writer(csvFile, delimiter='\t', lineterminator='\n')  <--- set the delimiter to a tab instead of a comma.
+                              csvWriter.writerow(['apples', 'oranges', 'bananas'])
+                          DictReader Objects  -  csv files can have header rows, if you'll recall from Ruby.  For these, you might want this object.
+                              This object reads csv file rows by using dictionaries(hashes) instead of lists(arrays), and they use the first row of
+                              the csv file as the keys of these dictionaries.  If you don't have header names, you can supply them on the spot like so..
+                                  exampleDictReader = csv.DictReader(exampleFile, ['header1', 'header2', 'header3'])
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
