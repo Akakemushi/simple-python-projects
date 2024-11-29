@@ -297,6 +297,8 @@ SYNTAX NOTES
                             *= x      (also works on strings!)
                             /= x
                             %= x
+                        round(some_float) will round a float into an int, and round(some_float, number of decimal places) will round a float into
+                            a shorter float.
 - variables =           works like Ruby.  Just put the variable name = value.  You don't need to specify data type.  n = 3, name = "Bob"
                         naming restrictions.  1. alphanumeric and underscore only.  2. must not start with number 3. no spaces.
                         variable names are CaSe SeNsItIvE
@@ -312,7 +314,9 @@ SYNTAX NOTES
                         Naturally, the order matters, and the number of variables MUST equal the number of list items.
 
 - user input =          input()     you can add a message or question inside the parenthesis  input("What's your name?")
-                        !!IMPORTANT!!   Input will ALWAYS be a string,
+                        !!IMPORTANT!!   Input will ALWAYS be a string.  Also!!  This function effectively PAUSES your code until the user presses
+                        the ENTER key... any other key will just type on the command line and will not progress the code.  You can sort of use this
+                        to make the code "wait" until the user pushes enter.  See the stopwatch.py program as a good example of this.
 - string length =       len(var)   or   len("String literal")
 - array length  =       len(array)   or    len([2, 3, 4, 5])
 - arrays         =      arrays in Python are called "lists", and the array itself is the "list value", which can be confusing.
@@ -965,6 +969,34 @@ JSON  (built-in module)   As expected, has functions related to JSON objects, us
                               Playing around with this, I found that the translation only makes minor visible changes, the main thing to note is that
                               conversion to a json means it is a single string as far as python is concerned, even floats, ints, and arrays.
                               Other than that, single quotes become double quotes, True/False become true/false, and None becomes null
+time module(built in)     time.time()  will return a FLOAT representing the current "epoch timestamp" (which is how many seconds have passed since
+                              January 1, 1970, 12am (UTC), weird I know, but it's a thing apparently. It's also called "Unix epoch"). You can use
+                              this stamp to "profile" your code, or see how long it takes to run by subtracting the first timestamp from the second.
+                              (This usage isn't really necessary though since cProfile module exists...)
+                          time.ctime()  will return a string description of the current time, like "Fri Nov 29 18:07:50 2024", and if you have an
+                              epoch timestamp (see above) already, you can pass it to this method to get a string version of that point in time.
+                          time.sleep()  will pause the program for some number (expressed in seconds as a float or int)
+datetime module           the "time" module is good for unix epoch time and timers, but for more "readable" times and for doing math with dates and
+                              times, the datetime module is what you need.  This module has its OWN DATATYPES, the datetime.datetime datatype (representing
+                              a MOMENT in time), and the timedelta datatype (representing a DURATION of time).
+                          datetime.datetime.now() will return something like:  datetime.datetime(year, month, day, hour, min, sec, sub-sec), where
+                              each of those words are replaced with a number, like (2024, 11, 29, 18, 45, 0, 123456).  You can save this value into
+                              a variable, and then access its properties.  I'll use "dt" as the variable name below.
+                          datetime.datetime(2024, 11, 29, 18, 45, 0) will CREATE a datetime object using the ints you feed it (doing some experimenting,
+                              I learned that if you don't include all the numbers, they are just set to 0, and if you include an imposible number, such
+                              as "13" for the month, you get an error, so it won't let you make impossible dates. It's even smart enough to know how
+                              many days are in each month!  You can't make February 30th, for example.  I wonder if it does leap years too??)
+                          dt.year  returns the year (as an int)
+                              the others are intuitive, dt.month, dt.day, dt.hour, dt.minute, dt.second, and dt.microsecond
+                          datetime.datetime.fromtimestamp(epoch timestamp) will convert an epoch timestamp to the datetime format.
+                          datetime.timedelta(days=11, hours=10, minutes=9, seconds=9)     will make a timedelta object.  Note there is NOT a "month"
+                              or "year" argument you can set, because the length of months and years is variable.  There IS however a "week",
+                              "millisecond" and "microsecond" option you can pass in.
+                          delta.days, delta.seconds, delta.microseconds will return, IN ORDER the number of WHOLE days (24 hrs) within the total duration,
+                              and then once the maximum number of days is subtracted, it returns the number of WHOLE seconds from that, and then the
+                              number of microseconds... it's kinda weird.  no other options seem to be available than those three.
+                          delta.total_seconds()   will return the duration in number of seconds alone.
+                          str(delta)  will give you a nicely formatted string of the date.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
@@ -972,6 +1004,7 @@ STANDARD LIBRARIES    (Remember, you can use import library_name as shorthand_na
 Name        Description
 copy        contains function for copying, useful for passing mutable data types such as lists and dictionaries.  Has .copy() and .deepcopy()
 csv         contains functions for working with csvs, both with and without headers
+datetime    contains functions for dates and times, (duh).
 json        contains functions for translating between JSON and python code.
 logging     contains functions for debug logging quickly, like logging.basicConfig, logging.debug
 math        contains functions related to math (duh).  such as round(float) and abs(int/float) which turns values positive.
@@ -990,9 +1023,11 @@ re          contains functions related to regex
 send2trash  (3rd party, must download) contains a safer, less "permanent" way to delete files than shutil.rmtree()
 shelve      contains functions related to saving and opening files that are not just plaintext. If you want to "shelve" some variables for later.
 shutil      contains functions for copying, moving, renaming and deleting files. (Short for "shell utilities")
+subprocess  not sure yet, but seems to be able to schedule or launch other programs.
 sys         contains functions related to the.. system? I guess? Such as sys.exit(), which will terminate the program immediately.
             (normally it terminates when it reaches the bottom.  This is useful for an infinitely looping menu that doesnt exit until the user
             selects or types "exit")
+threading   related to the "subprocess" module above, dealing with scheduling and launching other programs.
 time        contains functions for clocks and waiting, such as time.sleep(0.1)  (pause for 1/10 of a second)
 traceback   contains functions for getting error information, namely the call stack.
 zipfile     contains functions related to zipfiles and includes a data type called ZipFile, which has its own methods.
