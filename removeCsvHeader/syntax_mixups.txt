@@ -1,0 +1,1 @@
+1. some_array.count in Ruby is len(some_array) in Python.
