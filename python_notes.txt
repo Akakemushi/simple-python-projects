@@ -944,6 +944,16 @@ CSV FILES                 I know this, but a quick refresher: comma-separated va
                               This object reads csv file rows by using dictionaries(hashes) instead of lists(arrays), and they use the first row of
                               the csv file as the keys of these dictionaries.  If you don't have header names, you can supply them on the spot like so..
                                   exampleDictReader = csv.DictReader(exampleFile, ['header1', 'header2', 'header3'])
+                          DictWriter Objects  -  For making and alterning csv files with headers.
+                              First open an output file like so...
+                                  outputFile = open('output.csv', 'w', newline='')
+                              then make a DictWriter object that points to it...
+                                  outputDictWriter = csv.DictWriter(outputFile, ['Name', 'Pet', 'Phone'])
+                              note: the array above is required because we're creating hashes, and this DictWriter needs a way to confirm which keys are
+                              valid keys when you make new rows. I experimented with this, and indeed, trying to use an invalid key won't work.
+                              If you want your file to contain a header row, write that row by calling writeheader()
+                                  outputDictWriter.writeheader()    <--- will take the array in the arguments and make a row from them.
+                              otherwise skip it to omit a header row.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 
