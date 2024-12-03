@@ -326,6 +326,8 @@ SYNTAX NOTES
                         Lists CAN contain items of different data types, so   list = ["apple", 3, 5.7] is fine.
                         Like Ruby, you can get the LAST item by doing   list[-1]  and so on going backwards.
                         You can concatenate and multiply lists just like you can with strings using + and *
+                        Error alert!  If you try to make a copy of an array by simply doing array2 = array1, it will NOT work.  Array2 will point to the
+                        same array in memory.  To make a shallow copy, you can either do  arry2 = array1[:] or make use of the copy() module (see later)
 - array slice        =  To get an array slice, the syntax is  array[1:5]   where the first is the start of the slice, and the second is the stop.
                         CAREFUL!  The second number means "go up to but NOT include this" Also, don't get confused and think that the second number
                         means the length of the slice... it doesn't.  You can set variable values with slices.  slice =  array[3:5]
@@ -988,10 +990,42 @@ datetime module           the "time" module is good for unix epoch time and time
                               many days are in each month!  You can't make February 30th, for example.  I wonder if it does leap years too??)
                           dt.year  returns the year (as an int)
                               the others are intuitive, dt.month, dt.day, dt.hour, dt.minute, dt.second, and dt.microsecond
+                          dt.strftime()   returns a nicely formatted string of the datetime object you call it on. You must supply it with a string
+                              to use it.  This string accepts special variables that will be interpolated as follows...
+                                  Special Variables and their meanings:
+                                      %Y    Year with century, as in 2024
+                                      %y    Year without century, 00 to 99
+                                      %m    Month as a number, 01 to 12
+                                      %B    Full month name, like "November"
+                                      %b    Abbreviated month, like 'Nov'
+                                      %d    Day of the month, 01 to 31
+                                      %j    Day of the year, 001 to 366
+                                      %w    Day of the week, 0 (Sunday) to 6 (Saturday)
+                                      %A    Weekday name, like "Monday"
+                                      %a    Abbreviated weekday, like "Mon"
+                                      %H    Hour (24 hr time)  00 to 23
+                                      %I    Hour (12 hr time)  01 to 12
+                                      %M    Minute, 00 to 59
+                                      %S    Second, 00 to 59
+                                      %p    AM or PM
+                                      %%    (Literal % character)
+                                  You can freely mix and match these variables in any order, and with other non-variable characters as you like...
+                                      "%Y/%m/%d %H:%M:%S" -->  2019/10/21 16:29:32     "%B %d, %Y --> October 21, 2019
+                                      "I don't like %As." -->  I don't like Mondays.
+                          datetime.datetime.strptime("A string", "A Format to use")  will parse a string into a datetime object, using the format you
+                              pass to it.  The format string is exactly like the ones you can pass to strftime() above.  Just make sure the string
+                              fits the format you give it.   Example:  datetime.datetime.strptime("October of '19", "%B of '%y")
                           datetime.datetime.fromtimestamp(epoch timestamp) will convert an epoch timestamp to the datetime format.
                           datetime.timedelta(days=11, hours=10, minutes=9, seconds=9)     will make a timedelta object.  Note there is NOT a "month"
                               or "year" argument you can set, because the length of months and years is variable.  There IS however a "week",
-                              "millisecond" and "microsecond" option you can pass in.
+                              "millisecond" and "microsecond" option you can pass in. You can do math with timedelta objects like so:
+                                  dt = datetime.datetime.now()
+                                  thousandDays = datetime.timedelta(days=1000)
+                                  thousandDaysFromNow = dt + thousandDays
+                              You can also make a program "pause" until a certain date by using this math in conjunction with time.sleep and a loop...
+                                  halloween2030 = datetime.datetime(2016, 10, 31, 0, 0, 0)
+                                  while datetime.datetime.now() < halloween2030:
+                                      time.sleep(1)
                           delta.days, delta.seconds, delta.microseconds will return, IN ORDER the number of WHOLE days (24 hrs) within the total duration,
                               and then once the maximum number of days is subtracted, it returns the number of WHOLE seconds from that, and then the
                               number of microseconds... it's kinda weird.  no other options seem to be available than those three.

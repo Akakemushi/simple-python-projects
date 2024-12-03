@@ -1,0 +1,2 @@
+1. I tried to copy an array like this:  array2 = array1, thinking that it would point to a new place in memory; alas, it does not.  They point to the
+    same place.  The correct method to copy an array is to either do array2 = array1[:] (which creates a shallow copy), or use the "copy" module.
