@@ -56,6 +56,10 @@ For anyone reading this, these are just my personal notes as I get to know the P
   right before the argument passed to them, like so...  print("Hello", end="")    <-- here "end" is an optional parameter being filled in. (If you careful
   to know, it declares what the final character(s) will be, replacing the default new line character. Another you could use with print() is the "sep" argument
   which replaces the default space with something else when multiple strings are given to print.
+- Threads and Threading.  By default, Python programs have a single thread of execution. I'm pretty ok with this concept already, but just in case,
+  The idea is that if you imagine placing your finger on a flowchart for a program, your finger can never be in more than one place at a time.  If
+  you used more fingers, you could activate different parts of the program at a time, which is what multi-threading is.  Doing this allows you to
+  have one thread stop and wait, or perhaps handle some task that takes a while, while another thread is doing other things at the same time.
 - Python Call stack is FILO, First in, Last out.  If a function calls another function, that second function is completed and returns before the first
   function can continue.  Pretty standard.  Terminology wise, when a new function is called, a "Frame Object" is added to the top of the stack.
 - !!SCOPE!!   Variables that are assigned within a function call are in the "local" scope, while variables assigned OUTSIDE of any function are in the "global".
@@ -1031,6 +1035,17 @@ datetime module           the "time" module is good for unix epoch time and time
                               number of microseconds... it's kinda weird.  no other options seem to be available than those three.
                           delta.total_seconds()   will return the duration in number of seconds alone.
                           str(delta)  will give you a nicely formatted string of the date.
+-Threading (built-in)     The threading module allows you to create thread objects that can perform "background tasks".  To make a separate thread, you first
+                          need to make a Thread object by calling the threading.Thread() function.
+                              import threading, time
+                              print('Start of program.')
+                              def takeANap():
+                                  time.sleep(10)
+                                  print('Wake up!')
+                              threadObj = threading.Thread(target=takeANap)
+                              threadObj.start()
+                              print('End of program.')
+                          NOTE!!  you pass the keyword argument takeANap, not takeANap().  We wanna pass the function itself, not call it.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 

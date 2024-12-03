@@ -1,8 +1,8 @@
-import time
-print("Go!")
-time.sleep(1)
-print("Stop!")
-time.sleep(1)
-print("Go!")
-time.sleep(3.452)
-print("Stop!")
+import threading, time
+print('Start of program.')
+def takeANap():
+    time.sleep(10)
+    print('Wake up!')
+threadObj = threading.Thread(target=takeANap)
+threadObj.start()
+print('End of program.')
