@@ -199,13 +199,48 @@ def searchMatrix(theGrid, xDir, yDir):
                                         matchesFound += 1
     return matchesFound
 
-total = searchMatrix(matrix, 1, 0)
-total += searchMatrix(matrix, 1, 1)
-total += searchMatrix(matrix, 0, 1)
-total += searchMatrix(matrix, -1, 1)
-total += searchMatrix(matrix, -1, 0)
-total += searchMatrix(matrix, -1, -1)
-total += searchMatrix(matrix, 0, -1)
-total += searchMatrix(matrix, 1, -1)
+def searchMatrix2(theGrid):
+    matchesFound = 0
+    for y, row in enumerate(theGrid):
+        for x, letter in enumerate(row):
+            leftToRight = False
+            rightToLeft = False
+            currentX = x
+            currentY = y
+            if letter == "A":
+                currentX += -1
+                currentY += -1
+                if validateCoords(currentX, currentY):
+                    if matrix[currentY][currentX] == "M":
+                        currentX += 2
+                        currentY += 2
+                        if validateCoords(currentX, currentY):
+                            if matrix[currentY][currentX] == "S":
+                                leftToRight = True
+                    elif matrix[currentY][currentX] == "S":
+                        currentX += 2
+                        currentY += 2
+                        if validateCoords(currentX, currentY):
+                            if matrix[currentY][currentX] == "M":
+                                leftToRight = True
+                currentX = x + 1
+                currentY = y - 1
+                if validateCoords(currentX, currentY):
+                    if matrix[currentY][currentX] == "M":
+                        currentX += -2
+                        currentY += 2
+                        if validateCoords(currentX, currentY):
+                            if matrix[currentY][currentX] == "S":
+                                rightToLeft = True
+                    elif matrix[currentY][currentX] == "S":
+                        currentX += -2
+                        currentY += 2
+                        if validateCoords(currentX, currentY):
+                            if matrix[currentY][currentX] == "M":
+                                rightToLeft = True
+            if leftToRight == True and rightToLeft == True:
+                matchesFound += 1
+    return matchesFound
 
+total = searchMatrix2(matrix)
 print(total)
