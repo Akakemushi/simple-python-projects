@@ -380,3 +380,46 @@ print(loopCount)
 file.close()
 # 26 loops found as of row 434, then stuck
 # 95 loops found as of row 571, then stuck
+# 2 loops found as of row 16, then stuck
+# 1 loop found as of row 6, then stuck
+# 0 loops found as of row 1, then stuck
+# 10 loops found as of row 103, then stuck
+# 8 loops found as of row 24, then stuck
+# 13 24
+# 1 15
+# 40 197
+# 33 143
+# 22 103
+# 9 52
+# 145 575
+# 1 1
+# 64 206
+# 47 106
+# 26 55
+# 116 289
+# 11 25
+# 13 22
+# stuck
+# 7 10
+# 350 759
+# 68 124
+# 337 718
+# 16 33
+# 2 5
+# stuck
+# 7 19
+# 0 5
+# stuck
+# 4 7
+# 58 102
+# 33 48
+# 112 182
+# 117 179
+# 88 216
+# 2 3
+# 0 0
+# 3 4
+# 27 73
+# 20
+
+1934 + 42  
