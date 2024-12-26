@@ -231,9 +231,15 @@ test4 = matrixFromString(rawTest4)
 memos = None
 buildAllPaths(9, bigMap)
 # print(memos)
-totals = returnUniques(9)
-grandTotal = 0
-for uniqs in totals.values():
-    grandTotal += len(uniqs)
+total = 0
+for startPoint in memos:
+    for path in memos[startPoint]:
+        if len(path) == 9:
+            total += 1
+print(total)
+# totals = returnUniques(9)
+# grandTotal = 0
+# for uniqs in totals.values():
+#     grandTotal += len(uniqs)
 
-print(grandTotal)
+# print(grandTotal)
