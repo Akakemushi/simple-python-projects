@@ -1,2 +1,20 @@
 1. I tried to copy an array like this:  array2 = array1, thinking that it would point to a new place in memory; alas, it does not.  They point to the
     same place.  The correct method to copy an array is to either do array2 = array1[:] (which creates a shallow copy), or use the "copy" module.
+2. On an Advent of Code challenge, I spent a long time trying to debug a problem when a function was supposed to find valid arrays of numbers based
+    on whether or not that array followed a long list of rules in which one number MUST come either before or after another.  The problem was that i
+    simply had the "higher" and "lower" variables in the reversed positions.
+3. You can't open csv files or make file readers from within a function you defined within your program, though you can access the readers/writers from
+    within them.
+4. Apparently if you have a None value ANYWHERE within a list (and presumably a dictionary as well?), no matter how deep into the matrix, it becomes non
+    itterable and things like len() will no longer work.
+5. Hard bug to pin down, but on Advent Code 10 (finding the paths through the mountain), when building a dictionary of unique paths of incrementally
+    increasing "heights", in the loop, I only checked to see if the path was in the memo already for determining if it should be connected or not,
+    however sometimes the start point WAS in the dictionary, but it WASN'T a permitted value, and got added anyway.  The fix was to also check that the
+    value stored at that previously memoed coord was a valid value.  Took a long time to find that bug.
+6. Don't forget that when you divide something with /, it gives you a FLOAT, even if it devides evenly.
+7. Learned a big lesson in efficiency on Advent Code 11.  While I thought I did great on the first half, my algorithm could not withstand greater
+    amounnts of data, and due to huge amounts of computation (exponential growth) it could not complete.  So, if you find yourself in such a situation
+    again, see if you can memoize or tabulate results so that you don't have to recalcutate the same thing a billion times.  In this case, the solution
+    was a simple dictionary that kept a sort of running total for each of the numbers it was tracking.  I think the TAKEAWAY from this challenge is that
+    if you find yourself working with really really long lists that have lots of repeated values, try converting that list into a dict, assuming order
+    doesn't matter and only the counts do.

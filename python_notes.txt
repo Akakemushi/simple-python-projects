@@ -336,7 +336,8 @@ SYNTAX NOTES
                         CAREFUL!  The second number means "go up to but NOT include this" Also, don't get confused and think that the second number
                         means the length of the slice... it doesn't.  You can set variable values with slices.  slice =  array[3:5]
                         Shortcuts -   by leaving out a number such as  [:5]  or  [3:]  you are telling Python that you want to start at the
-                        beginning, or go all the way to the end, respectively.
+                        beginning, or go all the way to the end, respectively.  You can also set the end of a slice to beyond the actual end of the list
+                        and it won't error.  This is because you're not actually LOOKING at or ACCESSing what is there (or not there)
 - array item removal =  To delete a single item from an array, use the keyword  "del", followed by the index like so:   del  array[2]
                         all the items after that index get moved forward. You can also delete using slice notation (see above)
 - array include?     =  Works like a boolean operator such as == or > .  use keywords "in" and "not in" like so:
@@ -348,6 +349,22 @@ SYNTAX NOTES
                               print("Index ") + str(index) + " in this list is: " + item
                         Note here that the words "index" and "item" have been used, but you could use any variable name.
 - tuples            =   tuples are created just like lists/arrays, but with parentheses instead of square brackets. ("hi", "hello", "sup")
+                        tuples can be added together with +, so ("a", "b") + ("c", "d")  will give you ("a", "b", "c", "d").  If the tuples are each in
+                        their own array, then [("a", "b")] + [("c", "d")], will give you [("a", "b"), ("c", "d")]
+- sets              =   sets are created either by calling the set(somearray) method on some data, or by using curly brackets WITHOUT any colons
+                          if you use colons, it becomes a dictionary/hash.  What is a "set"?  It is a special datatype, kind of like a list, BUT...
+                              - A set will ignore any values added to it that already exist. Every item is UNIQUE.
+                              - A set has NO ORDER, and you cannot go to a particular index of a set.
+                              - A set itself is mutable, BUT the items within it must be immutable, so you can't store dicts and lists in one (though tuples are ok)
+                              - A set has a bunch of unique and useful methods built into it that help you find unique items
+                                  - mySet.add(item)  adds the item to the set. (note this is not .append)
+                                  - mySet.remove(item)  removes the item but THROWS ERROR if item doesn't exist.
+                                  - mySet.discard(item)  removes the items, does nothing if not found.
+                                  - if item in mySet   returns boolean T/F and is way more efficient than checking through an array.
+                                  - (mySet1 | mySet2)  returns one set made from the items in both sets, WITHOUT any duplicates.
+                                  - (mySet1 & mySet2)  returns one set consiting of only the values found that exist in both.
+                                  - (mySet1 - mySet2)  returns the first set with any values that appear in the second set removed from it.
+                                  - (mySet1 ^ mySet2)  returns the values that appear in one or the other, but NOT both.
 - hashes            =   in Python, hashes are called "DICTIONARIES", but function exactly the same way...
                         myDictionary = {'key1': 'value1', 'key2': 'value2'}
 - accessing hashes  =   Again, same as Ruby.  myDictionary["someKey"]  will give you the value stored at that key, and like Ruby,
@@ -409,8 +426,10 @@ SYNTAX NOTES
                          It's the number of steps that the iteration skips over.  Examples:
                          range(11) produces 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
                          range(5, 11) produces  5, 6, 7, 8, 9, 10   <---Note that it produces 5, but not 10.
+                         range(5, 0, -1) produces 5, 4, 3, 2, 1  <--- note that the only way you can "count backwards" is by including a negative step.
                          range(5, 11, 2)  produces  5, 7, 9  <-----Note that "10" is not produced because the last "skip" would skip past the end.
                          This function is for int  only, it will not work with floats.  You can, however, use negative numbers, and even count backwards.
+                         SEE ALSO the module "itertools" for even more functions, like getting "chunks" from lists.
 - random number          (must import random library) random.randint(start, end)  The arguments are inclusive, so the start and end numbers can appear as results.
 - random array item      (must import random library) random.choice(array_name)
 - shuffle array          (must import random library) random.shuffle(array_name) this shuffles the ORIGINAL array.  It doesn't make a copy.
@@ -427,6 +446,7 @@ SYNTAX NOTES
                          remember is that in Python, you need the closing parentheses, even if it's empty.  Each data type has its own built-in methods.
 - array methods          FIND-- array.index("item_to_locate")    will return the index of the argument, if it exists (or the first instance of that argument
                             if duplicates exist.)
+                         EXISTS?--  This is not a method, but something used in an if statement...   if "item" in array:    will return True or False.
                          PUSH-- array.append(item_to_add)  adds the item to the end of the list. MODIFIES ORIGINAL LIST
                          INSERT AT--  array.insert(index, item_to_insert) the item will take over that position in the
                             index, and everything gets shoved over one from there. MODIFIES ORIGINAL LIST
@@ -1035,8 +1055,10 @@ datetime module           the "time" module is good for unix epoch time and time
                               number of microseconds... it's kinda weird.  no other options seem to be available than those three.
                           delta.total_seconds()   will return the duration in number of seconds alone.
                           str(delta)  will give you a nicely formatted string of the date.
--Threading (built-in)     The threading module allows you to create thread objects that can perform "background tasks".  To make a separate thread, you first
-                          need to make a Thread object by calling the threading.Thread() function.
+-Threading (built-in)     The threading module allows you to create thread objects that can perform "background tasks".
+                          Note that NORMALLY a python program automatically ends after executing the final line of code,
+                          however if you have multiple threads, then it won't terminate until ALL threads have terminated.
+                          To make a separate thread, you first need to make a Thread object by calling the threading.Thread() function.
                               import threading, time
                               print('Start of program.')
                               def takeANap():
@@ -1046,14 +1068,51 @@ datetime module           the "time" module is good for unix epoch time and time
                               threadObj.start()
                               print('End of program.')
                           NOTE!!  you pass the keyword argument takeANap, not takeANap().  We wanna pass the function itself, not call it.
+                          threadObj.join()  is a way to make a program wait until that thread is done.  To use it, you first make a thread object
+                              as written above, then later in your MAIN code, you would call the extra thread's .join method from the main program.
+                              By doing so, the main program will "wait" for that particular thread to "rejoin" the main thread before moving on to the
+                              next line of code.
+                          If the target function you want to run in the new thread takes arguments, you can pass the target function's arguments
+                          to threading.Thread() as a list, and any keyword arguments as a dictionary.
+                              threadObj = threading.Thread(target=print, args=['Cats', 'Dogs', 'Frogs'], kwargs={'sep': ' & '})
+                              threadObj.start()
+                              (output will be )  "Cats & Dogs & Frogs"
+                          This is worth mentioning again: You CANNOT do this...  threadObj = threading.Thread(target=print('Cats', 'Dogs', 'Frogs', sep=' & '))
+                          ... all that would do is pass the returned value of the print function to .Thread (which is None).
+                          -CONCURRENCY ISSUES-   This can happen when you have multiple threads reading/writing to the same variables and getting in each
+                          other's way, and such bugs are hard to reproduce and debug. As a rule of thumb, try to only use local variables within the function
+                          passed into the new thread.
+                          PROCESSES vs THREADS   A process is a whole program being executed, and can contain many threads.  If you have multiple browsers
+                              open for example, then you have multiple processes going.  Unlike threads, processes CANNOT read or write each other's variables.
+- subprocess              this built-in module can launch other programs from Python using the Popen() function (though it is annoying to use on WSL ubuntu...)
+                          To use this with WSL Ubuntu and open programs that are on the Windows side of things, you'll need to path through /mnt like this..
+                              "/mnt/c/Windows/System32/calc.exe".  I don't know if /mnt/d or other drives are available like this...
+                              once you open a process(program) like this, it returns a Popen object, which has some methods you can play with.
+                              poll() and wait().
+                                  The "poll()" method is like asking the driver "are we there yet?" over and over.  It will return "None"
+                                      if the process is still running at the time poll() is called, otherwise, it will return the "exit code", which is an int.
+                                      Generally an exit code of 0 means there were no errors, or another int if there was an error.
+                                  The "wait()" method is like waiting until the driver has arrived at your destination.  It will block until the process
+                                      has terminated.  Use this if you want to pause until the user finishes with the other program.  It also returns
+                                      the process's exit code.
+                          You can pass command line arguments to processes you create with Popen() as a list.  The first string in this list will
+                              be the executable filename of the program you want to launch; all the subsequent strings will be the command line args,
+                              in effect becoming the value of sys.argv for the launched program. (Most GUI programs dont extensively use command line args
+                              , but might accept a filename that they will immediately open when they start.)
+
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
+- itertools           =   module with additional iteration functions.
+                            def get_chunks(list, chunk_size):
+                              for i in range(0, len(list), chunk_size):
+                                yield list[i:i + chunk_size]
 
 STANDARD LIBRARIES    (Remember, you can use import library_name as shorthand_name to make calling the functions within easier)
 Name        Description
 copy        contains function for copying, useful for passing mutable data types such as lists and dictionaries.  Has .copy() and .deepcopy()
 csv         contains functions for working with csvs, both with and without headers
 datetime    contains functions for dates and times, (duh).
+itertools   contains extra tools for iteration, like grabbing chunks from lists instead of individual items
 json        contains functions for translating between JSON and python code.
 logging     contains functions for debug logging quickly, like logging.basicConfig, logging.debug
 math        contains functions related to math (duh).  such as round(float) and abs(int/float) which turns values positive.
