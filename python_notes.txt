@@ -1099,7 +1099,15 @@ datetime module           the "time" module is good for unix epoch time and time
                               be the executable filename of the program you want to launch; all the subsequent strings will be the command line args,
                               in effect becoming the value of sys.argv for the launched program. (Most GUI programs dont extensively use command line args
                               , but might accept a filename that they will immediately open when they start.)
-
+- ezgmail (dl needed) =   Similar to the ezsheets module, this module uses the google api to access and use features of gmail.  I seem to have already
+                              set up the OAuthentication from the previous ezsheets project, so I already have a "credentials-sheets.json" file.
+                              So, to get started, import the ezgmail module, and then you can do stuff like the following...
+                                  ezgmail.init()    will initiate the connection (I guess?)
+                                  ezgmail.send('targetemail@domain.com', 'Subject Line', 'body of email')     this will send an email via the gmail
+                                      account that you have signed in with.  Optionally, you can include a 4th argument, a list [] of strings that are the
+                                      files you want to attach...   ..., ['attachment1.jpg', 'attachment2.jpg'])    (Note that gmail will likely block
+                                      any files that are repeated or .exe or .zip files because google will think they are viruses.)
+                                      you can also, use the keyword args   cc="anotheremail@blabla.com", bcc="otheremail@blabla.com"
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 - itertools           =   module with additional iteration functions.
