@@ -138,6 +138,7 @@ For anyone reading this, these are just my personal notes as I get to know the P
       still leaving 9.
     all this is to say, this method works with all the other indicies, too.    i = 5? No problem.  (5 - 1) = 4  -->    4 / 10 would leave a remainder of 4.
 - Chaining method calls.   You can chain method calls in Python just like in Ruby.  Something like myString.upper().lower() is valid.
+- You can set "constants" in Python by declaring them in ALL_CAPS.
 
 SYNTAX NOTES
 - Strings               Assignment is just like Ruby, use single or double quotes, with double quotes for using single quotes inside.
@@ -1111,10 +1112,89 @@ datetime module           the "time" module is good for unix epoch time and time
                                   ezgmail.EMAIL_ADDRESS  will return the email address that the token.json file is configured for.
                                   ezgmail.unread() will return a list of "GmailThread" objects, which you should save into a variable.
                                       GmailThread objects each have a .messages attribute, which is a list of each email in the message thread. (So,
-                                      all messages will have at least 1 message, but could have more, if replies were made.)
+                                      all messages will have at least 1 message, but could have more, if replies were made.) Here is a short code example
+                                      of how you can access the data...
+                                          import ezgmail
+                                          unreadThreads = ezgmail.unread()
+                                          str(unreadThreads[0].messages[0])   <--- would return a stringified version of the first email in the first thread.
+                                          str(unreadThreads[1].messages[2].subject)  <--- would return the subject of the third email in the second thread.
+                                      Other attributes of the .messages attribute are: .subject, .body, .timestamp, .sender, .recipient, .attachments
                                   ezgmail.summary(some list of GmailThread objects)  will display a quick summary of the email threads.  **Note, GmailThread
                                       keeps track of emails and direct replies as a "conversation thread", even if there is only one email.
-
+                                  ezgmail.recent() is similar to ezgmail.unread(), except if returns the most recent threads.  The default amount is 25,
+                                      however you can alter this with the keyword arg maxResults=100 or some other int.
+                                  ezgmail.search() works just like searching for emails in the Gmail searchbox.  Just put the search term as a string.
+                                      you can also pass any of the special search operators that you can enter into the search box to the search()
+                                      function, such as.. 'label:UNREAD', 'from:someEmail@bla.com', 'subject:hello', 'has:attachment', and more.
+                                      see https://support.google.com/mail/answer/7190?hl=en/   for more.
+                                  .downloadAttachment('filename.jpg')  is a method that can be called on a GmailMessage object to dl the attachment. Example:
+                                      import ezgmail
+                                      threads = ezgmail.search('vacation photos')
+                                      threads[0].messages[0].attachments  (will return a list of filenames, which you can store or print out...)
+                                      (example output) ['tulips.jpg', 'canal.jpg', 'bicycles.jpg']
+                                      threads[0].messages[0].downloadAttachment('tulips.jpg')   <--- here's how you'd use it.
+                                  .downloadAllAttachments() will do the same as the above, but dl all the attachments, as the name suggests.
+                                      note that both .downloadAttachment and .downloadAllAttachments can take an optional keyword argument to change the
+                                      directory in which the files will be downloaded, which is   downloadFolder='folderNameHere'   .  Also note that
+                                      duplicate filenames will automatically be overwritten, so be warned.
+                                  Other Features -- ezgmail contains additional features found at  https://github.com/asweigart/ezgmail/
+- smtplib  (built-in)     SMTP stands for Simple Mail Transfer Protocol, and is like the brother of HTTP, but for Email.  It dictates how email messages
+                              should be formatted, encrypted, and relayed between mail servers and all the other details that your computer handles
+                              after you click send.  IT ONLY DEALS WITH SENDING!  Not retrieving emails from others. (for that, see IMAP)
+                              Most email providers have other security measures in place to protect against spam, phishing etc. These measures
+                              prevent Python scripts from logging in to an email account with the smtplib and imapclient modules, however many of these
+                              services have APIs and specific Python modules that allow scripts to access them.
+- imapclient (dl needed)  IMAP stands for Internet Message Access Protocol, and it specifies how to communicate with an email provider'S
+                              server to retrieve emails sent to your email address.  It is my understanding that as long as I can use the ezgmail module,
+                              both this and the smtp module are entirely unneccessary... so I'm not gonna bother taking notes on them unless I really
+                              need to later on.  For reference, this info was on pages 420 - 433.
+- pillow (dl needed)      Pillow is a third-party module for handling image files.  You can crop, resize, and edit the content of an image.
+                              colors in Pillow are represented as RGBA tuples like: (255, 0, 0, 255) for red.  It also uses the same color standards
+                              as HTML does, so for example, the keyword "yellow" would correspond to the tuple (255, 255, 0, 255).
+                              Many of Pillow's functions also use a "box tuple" argument, which is a tuple of exactly 4 ints that represent the following:
+                                  1. Left - The x-coordinate of the leftmost edge of the box.
+                                  2. Top - The y-coordinate of the top edge of the box.
+                                  3. Right - The x-coord of one pixel to the right of the rightmost edge of the box.  This integer must be greater than Left.
+                                  4. Bottom - The y-coord of one pixel lower than the bottom edge of the box.  This integer must be greater than Top.
+                              To import pillow, you need to do    from PIL import Image   or   from PIL import ImageColor.
+                          ImageColor.getcolor()  takes a color name (a string) as its first arg, and 'RGBA' as its second arg.  It returns an RGBA tuple.
+                              (the color string you input is not case sensitive, so RED, Red and red all work.)  There are like over 100 standard colors,
+                              so you might be able to just "guess" at the name of a specific color and get really lucky.  Some examples (just to name a few)
+                              ghostwhite, goldenrod, ivory, khaki, lightsalmon, navy, hotpink... so yea, there's quite a few.
+                          Image.new() will create a new blank image.  It needs the following args:
+                              1. The string'RGBA', which sets the color mode to RGBA.  (There are others though.)
+                              2. The size, as a two-int tuple of the image's width and height.
+                              3. The background color that the image should start with, as a four-int tuple of an RGBA value. (Feel free to use the
+                                  .getcolor() function above to get a return value here).  You can also just pass it a color name string like "red".
+                          Image.open('filename.png') will return an Image object you can work with, so you need to save it in a variable.  If the file you
+                              want to open is NOT in the current working directory, you can import os and use the os.chdir function to navigate to that
+                              folder first.
+                          .save will save any changes you make to the Image object.  Also, it auto-converts the file into whatever format you specified.
+                          .size will return a tuple of the width and height of the Image object in pixels.
+                              you can quickly extract this info with the multi-assignment trick...  width, height = catIm.size
+                          .filename  will return the filename of the Image object (if you need it for some reason?)
+                          .format  will return the format (jpg, png, etc..) of the Image.
+                          .format_description   will return the long-form name of the format, such as "Portable Network Graphics" (aka PNG)
+                          .crop  will take a box tuple and return an Image object representing the cropped image.  Note that the original object is not
+                              changed; a new Image object is created, so you'd need to save it in a variable. !Remember, a box tuple goes up to, but
+                              does NOT include the final right and bottom numbers, kinda like the range() iterator.
+                          .copy  will return a new Image object with the same image as the Image object it was called on. Useful if you want to
+                              make changes to an image but also want to keep the original.
+                          .paste  takes two args, the first is the name of (another?) Image object, and a tuple representing where in the first image you want
+                              to align and paste the top-left corner of the other image...   bigCatPic.paste(starImage, (30, 30))  or something similar.
+                              .paste DOES modify the original image, unlike .crop.   You can "tile" images with clever use of .size and nested for loops.
+                          .resize  returns a NEW Image object of the specified width and height.  It takes a two-int tuple arg representing the new w/h.
+                          .rotate  takes an int or float representing how many degrees you want to rotate the Image object COUNTERclockwise.  Like .resize
+                              and .crop, it returns a new Image object and does not affect the original.  !Important!  When using this method, the
+                              dimentions of the canvas are NOT CHANGED at all, and so rotating an oblong image WILL result in clipping.  If you don't want
+                              clipping to happen, include the keyword arg   expand=True  along with the rotation degree arg to force the canvas to expand
+                              to accomodate overspill.
+                          .transpose()  is for FLIPPING or MIRRORING images.  It takes an unorthodox argument, either:
+                              1. .transpose(Image.FLIP_LEFT_RIGHT)      or
+                              2. .transpose(Image.FLIP_TOP_BOTTOM)
+                              In either case, it returns a new Image object.
+                          .getpixel()  takes a tuple representing the coords of any single pixel in an Image object, and returns the RGBA tuple found there.
+                          .putpixel()  is for drawing.  It takes 2 args: a tuple of the pixel you wanna color, and an RGBA tuple of the color.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 - itertools           =   module with additional iteration functions.
