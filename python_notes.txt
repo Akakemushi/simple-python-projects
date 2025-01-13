@@ -1195,6 +1195,31 @@ datetime module           the "time" module is good for unix epoch time and time
                               In either case, it returns a new Image object.
                           .getpixel()  takes a tuple representing the coords of any single pixel in an Image object, and returns the RGBA tuple found there.
                           .putpixel()  is for drawing.  It takes 2 args: a tuple of the pixel you wanna color, and an RGBA tuple of the color.
+                          ImageDraw  is another part of the Pillow module that allows you to draw simple shapes.  To get it started, here's the boilerplate
+                              from PIL import Image, ImageDraw   <-- Import both Image, and ImageDraw.
+                              im = Image.new('RGBA', (200, 200), 'white')  <-- first you need an image to work on.
+                              draw = ImageDraw.Draw(im)  <--  then create an ImageDraw object from the image.  This object has the methods you need.
+                              Many of these methods have a "fill" and "outline" arg that are optional keyword args and will default to white if left blank.
+                          .point(xy, fill) draws individual pixels.  xy is a LIST of the points.  It can be a list of tuples or a list of x-y coord ints
+                              not enclosed in tuples, (like    [x1, y1, x2, y2.....])
+                          .line(xy, fill, width)  draws a line or series of lines.  xy is either a list of tuples, or a list of integers like above.
+                              Each point is one of the connecting points on the lines you're drawing. (I assume contiguous?)
+                          .rectangle(xy, fill, outline)  draws a rectangle.  xy is a BOX TUPLE as described earlier.
+                          .ellipse(xy, fill, outline) draws an ellipse. xy is a BOX TUPLE as described earlier.
+                          .polygon(xy, fill, outline) draws an arbitrary polygon.  Works just like .line, but the last point will automatically be
+                              connected to the first point.
+                          .text(xy, text, fill, ImageFont object) draw text.  xy is a two-int tuple specifying the upper-left corner of the text box.  the text arg
+                              is a string of the message you want to type out.  fill and font are optional keyword args that are self-explanatory.
+                          .textsize(text string, ImageFont object)  this method is for measuring purposes, not really for direct editing or creation.
+                              What it does is return a two-int tuple of the width and height that the text in the given font WOULD be, if it were
+                              written onto the image.  You can use this info to help center the text or see if it's too big to fit.
+                              NOTE!! The above two methods can use an optional ImageFont object.  To get access to those, you need to import them.
+                                  from PIL import ImageFont
+                              once you have that, you can call the ImageFont.truetype(font file, font size) function. The font file should be a .ttf file,
+                              and the size should be an int representing the font size in POINTS (not pixels).  According to the book, you don't need
+                              to enter the full filepath to where the font files are, but in my case using WSL, the filepath is /mnt/c/Windows/Fonts
+                          There are more drawing methods for these objects.  Find them at https://pillow.readthedocs.io/en/latest/reference/ImageDraw.html
+- PyAutoGUI (dl needed)   PyAutoGUI is essentially HotKeys.  It is used to manipulate the mouse and keyboard in any way that a user could.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 - itertools           =   module with additional iteration functions.
@@ -1215,6 +1240,7 @@ os          contains stuff like os.chdir for changing the current working direct
             also contains os.path library, which has additional methods like os.path.abspath(), os.path.isabs(), os.path.getsize()
 pathlib     has stuff related to filepaths, however in the book example, you don't import the whole thing.  You use the following line:
             from pathlib import Path      <---  this shortens what we need to type later.  We can just type "Path" instead of "pathlib.Path"
+pillow      (3rd-party) an image manipulation module. (aka PIL, because it's backwards compatible)
 pprint      contains pprint and pformat, which help make output more readable (like printing hash data on separate lines, for example)
 pyinputplus (3rd party, must download) contains various data validation shortcuts so you don't have to write them yourself.
 PyPDF2      (3rd party, must download) used for working with PDF files
@@ -1237,6 +1263,7 @@ zipfile     contains functions related to zipfiles and includes a data type call
 
 INTERNET-RELATED LIBRARIES
 bs4         parses HTML documents. (Using this is better than just using Regex... less error prone.) FYI, it stands for 'Beautiful Soup 4'
+ezgmail     (3rd party), used for working with gmail (duh)
 ezsheets    (3rd party), used for working with google sheets
 requests    downloads files and web pages from the internet.   (Works on WSL! Yay!)
 selenium    launches and controls a web browser.  It can fill in forms and simulate mouse clicks in the browser. Use this when requests and bs4
