@@ -1222,6 +1222,30 @@ datetime module           the "time" module is good for unix epoch time and time
 - PyAutoGUI (dl needed)   PyAutoGUI is essentially HotKeys.  It is used to manipulate the mouse and keyboard in any way that a user could.
                               First of all, a warning.  DO NOT save a program as "pyautogui.py"  if you do, you won't be able to import the ACTUAL
                               pyautogui module, since your programs will import the file you named that instead.  Everything will break.
+                              Also, for WSL installation you will need to also run     pip install python-xlib  (this is WSL specific).
+                              Screen pixels increase from left to right on the x axis, and top to bottom on the y axis.
+                          pyautogui.size()  will return a two-integer "named" tuple of the screen's width and height in pixels.  (A named tuple works
+                              the same way as a normal tuple.)
+                          pyautogui.moveTo()  will instantly move the mouse to a specified position.  Integer values for the x/y coordinates make up the
+                              function's first and second arguments.  Optionally a duration integer or float keyword arg specifies the number of seconds
+                              it should take to move the mouse.
+                          pyautogui.move() is identical to the above, except that the x/y coords move the mouse that many pixels FROM ITS CURRENT POSITION
+                              that means that negagive numbers are also posible.  (the duration keword arg is also available here.)
+                          pyautogui.position()  will return a tuple of the mouses current x/y coords.  The neat thing about this is that it's a named tuple,
+                              so if you store that tuple in a variable, you can then access the x/y attributes very easily with .x and .y respectively.
+                              check this out...   p = pyautogui.postion()  (lets say the returned tuple was  (133, 244) )
+                                                p[0] would give 133, and p[1] would give 244.  BUT! You can also just do  p.x  to get the 133, or p.y! Nice!
+                          pyautogui.click(10, 5)  will move the mouse to (10, 5) and then click.
+                          pyautogui.mouseDown()   will click and hold the mouse button down.
+                          pyautogui.mouseUp()     will release the mouse button.
+                          pyautogui.doubleClick()  will double click.
+                          pyautogui.rightClick()   will right click.
+                          pyautogui.middleClick()  will middle click (the mousewheel I guess?)
+                          pyautogui.dragTo()       will click where it currently is, and drag to the monitor position of the coords given.
+                                                    it optionally includes a duration and a "button" keyword arg, if you wanted to, say, drag 
+                                                    with the right mouse button instead.
+                          pyautogui.drag()         same as above, but coords are relative to the current position, not the screen.
+                          pyautogui.scroll(200)    will scroll up (if positive int is given) or down (if negative int is given) that many units.
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 - itertools           =   module with additional iteration functions.
