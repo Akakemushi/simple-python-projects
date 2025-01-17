@@ -1228,14 +1228,16 @@ datetime module           the "time" module is good for unix epoch time and time
                               the same way as a normal tuple.)
                           pyautogui.moveTo()  will instantly move the mouse to a specified position.  Integer values for the x/y coordinates make up the
                               function's first and second arguments.  Optionally a duration integer or float keyword arg specifies the number of seconds
-                              it should take to move the mouse.
+                              it should take to move the mouse.  As with .click() (see below) this also accepts Image objects as args.
                           pyautogui.move() is identical to the above, except that the x/y coords move the mouse that many pixels FROM ITS CURRENT POSITION
                               that means that negagive numbers are also posible.  (the duration keword arg is also available here.)
                           pyautogui.position()  will return a tuple of the mouses current x/y coords.  The neat thing about this is that it's a named tuple,
                               so if you store that tuple in a variable, you can then access the x/y attributes very easily with .x and .y respectively.
                               check this out...   p = pyautogui.postion()  (lets say the returned tuple was  (133, 244) )
                                                 p[0] would give 133, and p[1] would give 244.  BUT! You can also just do  p.x  to get the 133, or p.y! Nice!
-                          pyautogui.click(10, 5)  will move the mouse to (10, 5) and then click.
+                          pyautogui.click(10, 5)  will move the mouse to (10, 5) and then click.  Alternatively, you can pass it a Box tuple (presumably received from the
+                                                    .locateOnScreen method) to click in the center of that box.  Finally, you can just pass click() an Image object to have it
+                                                    search for a match on the screen and click it!  How cool is that! (see .locateOnScreen for more)
                           pyautogui.mouseDown()   will click and hold the mouse button down.
                           pyautogui.mouseUp()     will release the mouse button.
                           pyautogui.doubleClick()  will double click.
@@ -1243,11 +1245,24 @@ datetime module           the "time" module is good for unix epoch time and time
                           pyautogui.middleClick()  will middle click (the mousewheel I guess?)
                           pyautogui.dragTo()       will click where it currently is, and drag to the monitor position of the coords given.
                                                     it optionally includes a duration and a "button" keyword arg, if you wanted to, say, drag 
-                                                    with the right mouse button instead.
+                                                    with the right mouse button instead.  As with .click() this also accepts Image objects as args.
                           pyautogui.drag()         same as above, but coords are relative to the current position, not the screen.
                           pyautogui.scroll(200)    will scroll up (if positive int is given) or down (if negative int is given) that many units.
                           pyautogui.mouseInfo()    !!  This is a tool to use when programming, not really something to include IN the program itself.  It launches a GUI mouse
                                                     tracking tool that will help you figure out the xy coordinates of stuff on your screen, as well as the pixel color, neat!
+                                                    by default, the "3 second delay" is active, which allows you to click one of the various "copy" buttons, and then move your
+                                                    mouse where it needs to be before the "copy" actually happens.
+                          pyautogui.screenshot()   will return an Image object (which you should store in a variable) of the current screen. Then you can manipulate it with the pillow
+                                                    module just like any other image.  USEFUL USAGE!  When you want to autoclick some button, but it's possible that the button
+                                                    could maybe move or be covered by something like a pop-up, you can use a screenshot, check the COLOR of the pixel in that spot
+                                                    and if something isn't right, stop the program or skip clicking.  But an EASIER WAY is with the next method...
+                          pyautogui.pixel((50, 200))  takes a tuple of coords and it'll tell you the color of the pixel there.  It returns a tuple of RGB values (no alpha).
+                          pyautogui.pixelMatchesColor()  will return True if the pixel at the given x/y coord on the screen matches the given color.  The args are as follows:
+                                                    (x, y, (r, g, b))
+                          pyautogui.locateOnScreen('somePic.png')  is quite interesting... it takes an image, and searches for a match of that exact image within the screen.
+                                                    if it finds a match, it returns a Box tuple (talked about in the Pillow module) of 4 ints (left, top, width, height).  If it
+                                                    doesn't find a match, it returns None. (It can also return a Generator object if multiple matches are found.)
+                                                    BUT WAIT! THERE'S MORE!   You can use Image objects with click, moveTo and dragTo!
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 - itertools           =   module with additional iteration functions.
