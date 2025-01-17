@@ -1246,6 +1246,8 @@ datetime module           the "time" module is good for unix epoch time and time
                                                     with the right mouse button instead.
                           pyautogui.drag()         same as above, but coords are relative to the current position, not the screen.
                           pyautogui.scroll(200)    will scroll up (if positive int is given) or down (if negative int is given) that many units.
+                          pyautogui.mouseInfo()    !!  This is a tool to use when programming, not really something to include IN the program itself.  It launches a GUI mouse
+                                                    tracking tool that will help you figure out the xy coordinates of stuff on your screen, as well as the pixel color, neat!
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 - itertools           =   module with additional iteration functions.
