@@ -1263,6 +1263,51 @@ datetime module           the "time" module is good for unix epoch time and time
                                                     if it finds a match, it returns a Box tuple (talked about in the Pillow module) of 4 ints (left, top, width, height).  If it
                                                     doesn't find a match, it returns None. (It can also return a Generator object if multiple matches are found.)
                                                     BUT WAIT! THERE'S MORE!   You can use Image objects with click, moveTo and dragTo!
+                          pyautogui.getActiveWindow()  will return a Window object (technically a Win32Window object). These objects have the following attributes...
+                                                        -left, right, top, bottom    these are single ints for the x or y coord of the window's side.
+                                                        -topleft, topright, bottomleft, bottomright   are named tuples of two ins for corners.
+                                                        -midleft, midright, midtop, midbottom   are named tuples of the midpoints of the sides.
+                                                        -width, height   are the width and height.
+                                                        -size    same as above, but expressed as a tuple.
+                                                        -area    the number of pixels in the window
+                                                        -center    named tuple point of the center point
+                                                        -centerx, centery    as above, but expressed as single ints
+                                                        -box     a Box tuple 
+                                                        -title    a string of text in the title bar.
+                                                        -isMaximized   a boolean telling you if it's maximized or not.
+                                                        -isMinimized   a boolean telling you if it's minimized or not.
+                                                        -isActive      a boolean telling you if it has focus or not.
+                                                        -maximize()    a method that maximizes the window.
+                                                        -minimize()    a method that minimizes the window.
+                                                        -restore()     a method that turns on the "windowed" mode of the window.
+                                                        -close()       a method that closes the window (warning: it may not ask you to save changes...)
+                                                        -activate()    a method that makes that window the active window in focus.
+                          pyautogui.getAllWindows()  returns a list of Window objects for every visible window on the screen.
+                          pyautogui.getWindowsAt(x, y)  Returns a list of Window objects for every visible window that includes the point (x, y)
+                          pyautogui.getWindowsWithTitle(title)  Returns a list of Window objects for every visible window that has that title.
+                          pyautogui.getAllTitles() Returns a list of strings (all the window titles)
+                          moving and resizing windows....   to move a window, you can SET one of its positional attributes (like topleft or bottom for example).  Likewise,
+                                you can change its size by SETTING its height/width attributes.
+                          pyautogui.write('text here')   will send virtual keypresses to the computer.  (A trick to help you use this in the interactive shell is to put a semicolon 
+                                in between commands so that you can write multiple commands without executing them by pressing the enter key.)
+                                By default, the text will be entered instantaneously, however you can slow it down to enter 1 by 1 with a second int or float arg, which will
+                                determine the length of pause to give after each character.  (Characters that normally require a shift key to be held are handled automatically.)
+                                If you need more specific keystrokes or something outside the character set, pass a list as an arg, containing the keys you want to enter.
+                                By doing this, you have access to the full keyboard via special keywords.  Here are some you can use, (note they must be in quotes when using them.)
+                                enter, esc, shiftleft, shiftright, altleft, altright, ctrlleft, ctrlright, tab, backspace, delete, pageup, pagedown, home, end, up, down, left, right
+                                f1 - f12, volumemute, volumedown, volumeup, pause, capslock, numlock, scrolllock, insert, printscreen, winleft, winright
+                          pyautogui.keyDown('someKey')   will hold that key down.
+                          pyautogui.keyUp('someKey')     will release the key.
+                          pyautogui.press('someKey')     presses a key once. (one down and up stroke)
+                          pyautogui.hotkey('ctrl', 'c')   is the shortcut way of doing repetetive keyDown and keyUp commands.  This works for up to 4 args (as far as I know...)
+                          pyautogui.sleep(seconds)       same as the version in the time module, but also included here for convenience.
+                          OUT-OF-TERMINAL-messages   -  as you use this module, VScode can become minimized, hidden, covered, etc... so here are some ways to get messages besides the terminal
+                                pyautogui.alert(text)  displays text and has a single OK button (you can include an optional second string arg to give the popup a title.)
+                                pyautogui.confirm(text)  displays text and has ok and cancel buttons, returning either 'OK' or 'Cancel' depending on the click.
+                                pyautogui.prompt(text)   displays text and has a text field for the user to type in, which returns as a string.
+                                pyautogui.password(text)  same as above, but displays asterisks to prevent snooping.
+
+                          
 - help                =   Now this is neat, you can use the built in help function in the console to learn the usage of a particular built-in or
                           imported function like so...     help(pyip.inputChoice)
 - itertools           =   module with additional iteration functions.
